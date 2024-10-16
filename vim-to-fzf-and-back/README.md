@@ -1,7 +1,13 @@
 Vim to fzf and back
 
-The flow I'm imagining:
+Usage:
 
-- trigger fzf from vim in a new tmux window
-- select a file
-- navigate to the file in vim
+```vim
+:execute '!./vim-to-fzf-and-back/fzf-tmux.sh ' . v:servername
+```
+
+It:
+
+- opens a new tmux window
+- fzf inside
+- opens selected file in vim
