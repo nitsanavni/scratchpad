@@ -1,0 +1,33 @@
+#!/usr/bin/env bun
+
+const { spawn, stdin, stdout } = require("bun");
+
+// Capture the CLI arguments
+const args = process.argv.slice(2);
+
+
+(async () => {
+  // Spawn a shell process using the provided CLI arguments
+  const proc = spawn(["/bin/sh", "-c", args.join(" ")], {
+    stdin: "pipe",  // Allow writing to child stdin
+    stdout: "inherit", // Capture child stdout
+    stderr: "inherit", // Capture child stderr
+  });
+
+  outputWriter = stdout.writer();
+
+  // Read from stdin in chunks
+  for await (const chunk of stdin.stream()) {
+    // Print each chunk to the parent's stdout
+    outputWriter.write(chunk);
+
+    // Write each chunk to the child process's stdin
+    await proc.stdin.write(chunk);
+  }
+
+  // Close the child stdin when done
+  proc.stdin.end();
+
+  // Wait for the child process to exit
+  await proc.exited;
+})();
