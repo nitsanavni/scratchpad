@@ -1,40 +1,30 @@
-changes required: Create a Bun script to wrap a command and print both the original input and the command's output.
+changes required: Remove all comments
 
-### File: `wrapped-cmd.ts`
+### File: `./echorun`
 
-```typescript
-import { stdin, stdout } from "bun";
+```
+#!/usr/bin/env bun
 
-// Function to read from stdin
-async function readStdin() {
-  const decoder = new TextDecoder();
-  const input = await new Response(stdin).arrayBuffer();
-  return decoder.decode(input);
-}
+const { spawn, stdin, stdout } = require("bun");
+
+const args = process.argv.slice(2);
 
 (async () => {
-  const input = await readStdin();
-
-  // Print the original input
-  console.log("--- Input ---");
-  console.log(input);
-
-  // Execute the wrapped command using Bun.spawn
-  const wrappedCmd = Bun.spawn({
-    cmd: process.argv.slice(2), // command to wrap
-    stdin: Bun.file(input),
-    stdout: "pipe",
+  const proc = spawn(["/bin/sh", "-c", args.join(" ")], {
+    stdin: "pipe",
+    stdout: "inherit",
     stderr: "inherit",
   });
 
-  const cmdOutput = await new Response(wrappedCmd.stdout).text();
+  outputWriter = stdout.writer();
 
-  // Print the output from the wrapped command
-  console.log("--- Output ---");
-  console.log(cmdOutput);
+  for await (const chunk of stdin.stream()) {
+    outputWriter.write(chunk);
+    await proc.stdin.write(chunk);
+  }
 
-  await wrappedCmd.exited;
+  proc.stdin.end();
+
+  await proc.exited;
 })();
 ```
-
-Use this script in Vim as `:.!bun wrapped-cmd.ts your-command`. It will display both the input and the output of the command executed through the script.
