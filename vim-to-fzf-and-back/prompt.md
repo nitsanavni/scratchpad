@@ -1,5 +1,3 @@
-./find_in_files.sh
+./find_in_files.vim
 
-rg should always print the filename, even if only one file in list
-
-
+create a user cmd and then the mapping
