@@ -1,5 +1,4 @@
 #!/bin/bash
 
 file_list=$(cat)
-
-rg -n '' $file_list | fzf --tmux
+rg -n --with-filename '' $file_list | fzf --tmux
