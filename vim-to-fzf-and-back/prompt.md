@@ -1,11 +1,5 @@
-write a new shell scipt `fzf-tmux.sh`
+./fzf_output_the_filtered_down_list.sh
 
-it will be called with the servername as an argument
-example:
-:execute '!your-shell-script.sh ' . v:servername
+fzf normally outputs a single selection
+I'd like to output all the items left in the filtered down list
 
-
-inside it will:
-tmux neww
-bash --norc --noprofile
-nvr --servername $servername --remote-send "<esc>:e $e(fzf)<cr>"
