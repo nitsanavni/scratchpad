@@ -1,5 +1,6 @@
-./fzf_output_the_filtered_down_list.sh
+let's create a new script find_in_files.sh
 
-fzf normally outputs a single selection
-I'd like to output all the items left in the filtered down list
+it reads a file list from stdin
+then use rg --line-number file-list | fzf
+to fuzzy find a line of code in all the files
 
