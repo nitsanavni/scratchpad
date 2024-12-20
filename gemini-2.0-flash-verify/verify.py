@@ -17,7 +17,7 @@ def verify(thing, test_name, extension=""):
         extension = "." + extension
 
     filename = f"{test_name}.approved{extension}"
-    received_filename = f"{test_name}.received"
+    received_filename = f"{test_name}.received{extension}"  # Extension added here
 
     try:
         with open(filename, "r") as f:
