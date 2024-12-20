@@ -1,4 +1,5 @@
 from verify import verify
+import json
 
 
 # Example usage (in a pytest or other test function):
@@ -19,7 +20,5 @@ With some more changes"""
 
 
 def test_json_output():
-    import json
-
     data = {"a": 1, "b": [1, 2, 3]}
-    verify(json.dumps(data, indent=4), "test_json_output")
+    verify(json.dumps(data, indent=4), "test_json_output", ".json")
