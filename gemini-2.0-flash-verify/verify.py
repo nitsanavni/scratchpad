@@ -17,22 +17,24 @@ def verify(thing, test_name, extension=""):
         extension = "." + extension
 
     filename = f"{test_name}.approved{extension}"
-    received_filename = f"{test_name}.received{extension}"  # Extension added here
+    received_filename = f"{test_name}.received{extension}"
 
     try:
         with open(filename, "r") as f:
-            approved_content = f.read()
+            approved_content = f.readlines()  # Read lines with newlines
     except FileNotFoundError:
         print(f"Creating new approval file: {filename}")
         with open(filename, "w") as f:
-            approved_content = ""
+            approved_content = []  # Initialize as empty list
 
     thing_str = str(thing)
+    thing_lines = thing_str.splitlines(keepends=True) # Split into lines, keeping newlines
 
     with open(received_filename, "w") as f:
-        f.write(thing_str)
+        f.writelines(thing_lines) # Write lines to file
+        f.write("\n")
 
-    if thing_str == approved_content:
+    if thing_lines == approved_content:
         print(f"Test '{test_name}' passed.")
         if os.path.exists(received_filename):
             os.remove(received_filename)
@@ -41,8 +43,8 @@ def verify(thing, test_name, extension=""):
     print(f"Test '{test_name}' failed. Diff:")
 
     diff = difflib.unified_diff(
-        thing_str.splitlines(keepends=True),
-        approved_content.splitlines(keepends=True),
+        thing_lines,
+        approved_content,
         fromfile=received_filename,
         tofile=filename,
     )
