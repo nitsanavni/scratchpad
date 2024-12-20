@@ -23,6 +23,7 @@ def verify(thing, test_name):
             approved_content = ""
 
     thing_str = str(thing)  # Ensure we're comparing strings
+
     with open(received_filename, "w") as f:
         f.write(thing_str)
 
@@ -34,26 +35,24 @@ def verify(thing, test_name):
 
     print(f"Test '{test_name}' failed. Diff:")
 
-    # Use difflib for a nicer diff in the console
+    # Use difflib for a nicer diff in the console. CRUCIAL FIX HERE:
     diff = difflib.unified_diff(
-        approved_content.splitlines(keepends=True),
-        thing_str.splitlines(keepends=True),
-        fromfile=filename,
-        tofile=received_filename,
+        thing_str.splitlines(keepends=True),  # Received content FIRST
+        approved_content.splitlines(keepends=True), # Approved content SECOND
+        fromfile=received_filename, # Received file name
+        tofile=filename, # Approved file name
     )
     print("".join(diff))
 
-    # Attempt to launch a diff tool (e.g., Meld, Beyond Compare, etc.)
+    # Attempt to launch a diff tool
     try:
-        subprocess.run(["meld", filename, received_filename], check=False)  # Meld
+        subprocess.run(["d.sh", received_filename, filename], check=False)  # Your preferred tool, received first
     except FileNotFoundError:
         try:
-            subprocess.run(
-                ["bcompare", filename, received_filename], check=False
-            )  # Beyond Compare
+            subprocess.run(["bcompare", received_filename, filename], check=False)  # Backup tool, received first
         except FileNotFoundError:
             print(
-                "meld or bcompare not found. Please install a diff tool for visual comparison."
+                "d.sh or bcompare not found. Please install a diff tool for visual comparison."
             )
 
     raise AssertionError(

@@ -9,3 +9,11 @@ if te approved file does not exist yet - create an empty one
 match: pass
 
 mismatch: fail and launch a diff tool received file vs approved
+
+---
+
+1. received should be on the left side on all diffs
+
+2. I have a diff tool I like its path is `d.sh` - let's default to it, still keep the bcomp backup
+
+
