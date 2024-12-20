@@ -38,18 +38,22 @@ def verify(thing, test_name):
     # Use difflib for a nicer diff in the console. CRUCIAL FIX HERE:
     diff = difflib.unified_diff(
         thing_str.splitlines(keepends=True),  # Received content FIRST
-        approved_content.splitlines(keepends=True), # Approved content SECOND
-        fromfile=received_filename, # Received file name
-        tofile=filename, # Approved file name
+        approved_content.splitlines(keepends=True),  # Approved content SECOND
+        fromfile=received_filename,  # Received file name
+        tofile=filename,  # Approved file name
     )
     print("".join(diff))
 
     # Attempt to launch a diff tool
     try:
-        subprocess.run(["d.sh", received_filename, filename], check=False)  # Your preferred tool, received first
+        subprocess.run(
+            ["d.sh", received_filename, filename], check=False
+        )  # Your preferred tool, received first
     except FileNotFoundError:
         try:
-            subprocess.run(["bcompare", received_filename, filename], check=False)  # Backup tool, received first
+            subprocess.run(
+                ["bcompare", received_filename, filename], check=False
+            )  # Backup tool, received first
         except FileNotFoundError:
             print(
                 "d.sh or bcompare not found. Please install a diff tool for visual comparison."
