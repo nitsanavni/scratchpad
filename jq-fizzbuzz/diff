@@ -1,0 +1,1 @@
+./run | (diff -u fb.approved - && bat fb.approved) | bat -l diff

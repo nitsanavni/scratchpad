@@ -1,0 +1,1 @@
+./run >fb.approved
