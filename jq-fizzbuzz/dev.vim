@@ -1,9 +1,9 @@
-command Approve execute "silent !./approve.sh" | redraw!
+command! Approve execute "silent !./approve.sh" | redraw!
 nnoremap <Leader>a :Approve<CR>
-nnoremap <leader>s :w<CR>
+nnoremap <Leader>s :w<CR>
 
-command TypistType call TypistTypeFunc()
-function! TypistTypeFunc()
+command! TypistPrompt call TypistPromptFunc()
+function! TypistPromptFunc()
   " Get the current file name
   let current_file = expand('%:t')
 
@@ -13,10 +13,11 @@ function! TypistTypeFunc()
 
   " Insert the content
   call setline(1, './' . current_file)
-  call append(1, '')
-  call append(2, '')
+  call append(line('.'), ['', '']) " Append empty lines at cursor
 
-  " Move the cursor to the last line and enter insert mode
+  " Enter insert mode at the last empty line
   normal! G
   startinsert
 endfunction
+nnoremap <Leader>p :TypistPrompt<CR>
+nnoremap <Leader>t :%w !typist<CR> :q!<CR>
