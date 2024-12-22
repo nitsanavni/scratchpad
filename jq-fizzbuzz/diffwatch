@@ -1,0 +1,1 @@
+ls fizzbuzz.jq fb.approved | entr -c ./diff

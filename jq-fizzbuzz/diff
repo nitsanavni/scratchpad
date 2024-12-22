@@ -1,1 +1,16 @@
-./run | (diff -u fb.approved - && bat fb.approved) | bat -l diff
+#!/bin/bash
+
+# Run the command and save the output to a temporary file
+./run > output.tmp
+
+# Compare the output with the approved file
+if diff -u fb.approved output.tmp > diff.tmp; then
+    # If no difference, display the approved file with bat
+    cat fb.approved
+else
+    # If there are differences, process the diff
+    tail -n +4 diff.tmp | bat -l diff --plain
+fi
+
+# Clean up temporary files
+rm output.tmp diff.tmp
