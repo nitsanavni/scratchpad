@@ -1,0 +1,4 @@
+- more shortcuts
+  - commit on approve
+  - typist: continue on previous prompt, continue the conversation
+- save the tmux setup

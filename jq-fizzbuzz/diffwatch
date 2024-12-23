@@ -1,1 +1,1 @@
-ls fizzbuzz.jq fb.approved | entr -c ./diff
+ls fizzbuzz.* fb.approved | entr -c ./diff
