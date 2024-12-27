@@ -1,1 +1,1 @@
-python fizzbuzz.py
+jq -nrf fizzbuzz.jq
