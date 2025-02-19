@@ -27,8 +27,8 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 
 # Snake starting position and body
-snake_pos = [100, 50]
-snake_body = [[100, 50], [80, 50], [60, 50]]
+snake_pos = [100, 40]
+snake_body = [[100, 40], [80, 40], [60, 40]]
 direction = "RIGHT"
 change_to = direction
 
