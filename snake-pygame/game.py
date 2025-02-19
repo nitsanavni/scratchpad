@@ -25,6 +25,7 @@ fps = 10
 black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
+white = (255, 255, 255)
 
 # Snake starting position and body
 snake_pos = [100, 40]
@@ -41,17 +42,21 @@ food_spawn = True
 
 score = 0
 
+def show_score():
+    font = pygame.font.SysFont("times new roman", 20)
+    score_surface = font.render(f"Score: {score}", True, white)
+    score_rect = score_surface.get_rect(topleft=(10, 10))
+    screen.blit(score_surface, score_rect)
 
 def game_over():
     font = pygame.font.SysFont("times new roman", 50)
-    game_over_surface = font.render("Game Over", True, red)
+    game_over_surface = font.render(f"Game Over - Score: {score}", True, red)
     game_over_rect = game_over_surface.get_rect(center=(width / 2, height / 2))
     screen.blit(game_over_surface, game_over_rect)
     pygame.display.flip()
     pygame.time.wait(2000)
     pygame.quit()
     sys.exit()
-
 
 while True:
     for event in pygame.event.get():
@@ -115,6 +120,9 @@ while True:
     pygame.draw.rect(
         screen, red, pygame.Rect(food_pos[0], food_pos[1], cell_size, cell_size)
     )
+
+    # Show score
+    show_score()
 
     # Check for collisions with boundaries
     if (
