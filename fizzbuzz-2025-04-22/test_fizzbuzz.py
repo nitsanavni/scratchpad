@@ -1,20 +1,9 @@
+import subprocess
 from approvaltests import verify, Options
 from approvaltests.reporters.python_native_reporter import PythonNativeReporter
 
 
-def fizzbuzz():
-    for i in range(1, 101):
-        if i % 15 == 0:
-            print("FizzBuzz")
-        elif i % 3 == 0:
-            print("Fizz")
-        elif i % 5 == 0:
-            print("Buzz")
-        else:
-            print(i)
-
-
-def test_fizzbuzz(capsys):
+def test_fizzbuzz():
     """
     FizzBuzz
     31
@@ -27,11 +16,15 @@ def test_fizzbuzz(capsys):
     38
     Fizz
     """
-    fizzbuzz()
-    captured = capsys.readouterr()
+    # Run the fizzbuzz script as a subprocess
+    result = subprocess.run(
+        ["uv", "run", "fizzbuzz.py"], capture_output=True, text=True, check=True
+    )
+
     # Extract lines 30-39 which correspond to the middle portion of the output
-    output_lines = captured.out.strip().split("\n")
+    output_lines = result.stdout.strip().split("\n")
     mid_section = "\n".join(output_lines[29:39])
+
     verify(
         mid_section, options=Options().with_reporter(PythonNativeReporter()).inline()
     )
