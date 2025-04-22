@@ -1,2 +1,3 @@
 - `uv run pytest`
 - `uv tool run ruff check .`
+- `uv tool run black .`
