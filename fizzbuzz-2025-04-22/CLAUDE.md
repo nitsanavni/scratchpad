@@ -1,0 +1,2 @@
+- `uv run pytest`
+- `uv tool run ruff check .`
