@@ -18,4 +18,4 @@ def fizzbuzz(n):
 
 
 def test_fizzbuzz():
-    verify("\n".join(fizzbuzz(15)))
+    verify("\n".join(fizzbuzz(30)))
