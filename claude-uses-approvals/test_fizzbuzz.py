@@ -10,6 +10,8 @@ def fizzbuzz(n):
             result.append("Fizz")
         elif i % 5 == 0:
             result.append("Buzz")
+        elif i % 7 == 0:
+            result.append("Whizz")
         else:
             result.append(str(i))
     return result
