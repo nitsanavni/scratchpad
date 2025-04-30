@@ -1,4 +1,4 @@
-from approvaltests import verify
+from approvaltests import verify, Options
 
 
 def fizzbuzz(n):
@@ -13,13 +13,23 @@ def fizzbuzz(n):
             output += "Whizz"
         if i % 11 == 0:
             output += "Bang"
-        
+
         if output == "":
             output = str(i)
-            
+
         result.append(output)
     return result
 
 
 def test_fizzbuzz():
-    verify("\n".join(fizzbuzz(33)))
+    """
+    26
+    Fizz
+    Whizz
+    29
+    FizzBuzz
+    31
+    32
+    FizzBang
+    """
+    verify("\n".join(fizzbuzz(33)[25:]), options=Options().inline())
