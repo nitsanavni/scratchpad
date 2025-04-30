@@ -35,38 +35,31 @@ def test_calculator():
     verify_docstring(test_calculator.__doc__, calculate, "=")
 
 
-def test_calculator_cli():
-    """
-    End-to-end test for the calculator CLI.
-    Runs the calculator as a subprocess and verifies the output.
-    """
-    # Get the absolute path to calculate.py
+def run_calculator_cli(expression):
+    """Run the calculator CLI with the given expression and return the output"""
     calculator_path = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "calculate.py")
     )
 
-    # Test cases: expression, expected result
-    test_cases = [
-        ("2 + 2", "4"),
-        ("3 * 4", "12"),
-        ("2 ** 3", "8"),
-        ("10 - 5", "5"),
-        ("2 ** -2", "0.25"),
-        ("(2 + 3) * 4", "20"),
-        ("((1 + 2) * 3) + 2", "11"),
-    ]
+    result = subprocess.run(
+        [sys.executable, calculator_path, expression],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
 
-    for expression, expected in test_cases:
-        # Run the calculator with the expression
-        result = subprocess.run(
-            [sys.executable, calculator_path, expression],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
+    return result.stdout.strip()
 
-        # Check the output
-        output = result.stdout.strip()
-        assert (
-            output == expected
-        ), f"Expected {expected}, got {output} for expression: {expression}"
+
+def test_calculator_cli():
+    """
+    2 + 2 = 4
+    3 * 4 = 12
+    2 ** 3 = 8
+    10 - 5 = 5
+    2 ** -2 = 0.25
+    (2 + 3) * 4 = 20
+    ((1 + 2) * 3) + 2 = 11
+    (((1 + 2) * 3) + 2) ** 2 = 121
+    """
+    verify_docstring(test_calculator_cli.__doc__, run_calculator_cli, "=")
