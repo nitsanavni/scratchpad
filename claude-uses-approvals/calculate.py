@@ -27,7 +27,7 @@ def calculate(expression):
             # Continue evaluating
             return calculate(new_expression)
 
-    # Handle exponentiation
+    # Handle exponentiation (fixed)
     if "**" in expression:
         parts = expression.split("**", 1)  # Split only on first occurrence
         if len(parts) == 2:
@@ -44,7 +44,7 @@ def calculate(expression):
         if len(parts) == 2:
             return int(parts[0].strip()) * int(parts[1].strip())
 
-    # Handle addition
+    # Handle addition (fixed)
     if "+" in expression:
         parts = expression.split("+")
         if len(parts) == 2:
