@@ -1,12 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(:*)",
-      "Bash(git commit:*)",
-      "Bash(git:*)",
-      "Bash(mkdir:*)",
+      "Bash",
       "Write",
-      "Edit"
+      "Edit",
+      "mcp__tmux__send_keys",
+      "mcp__tmux__read"
     ]
   }
 }
