@@ -89,7 +89,7 @@ def test_tictactoe_move():
         params = eval(input_str)
         return tictactoe_move(params[0], params[1], params[2])
 
-    verify_docstring(test_tictactoe_move.__doc__, process_move, "->")
+    verify_docstring(processor_fn=process_move)
 
 
 def test_check_winner():
@@ -109,4 +109,5 @@ def test_check_winner():
     XOXOXOXOX -> X
     XOXXOOOXX -> Draw
     """
-    verify_docstring(test_check_winner.__doc__, check_winner, "->")
+    # Use the enhanced automatic detection
+    verify_docstring()

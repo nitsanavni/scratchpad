@@ -3,6 +3,7 @@ import os
 import sys
 
 from docstring_parser import verify_docstring
+
 from calculate import calculate
 
 
@@ -32,7 +33,7 @@ def test_calculator():
     (((1 + 2) * 3) + 2) ** 2 = 121
     (2 * (3 + (4 * 5))) = 46
     """
-    verify_docstring(test_calculator.__doc__, calculate, "=")
+    verify_docstring(processor_fn=calculate, separator="=")
 
 
 def run_calculator_cli(expression):
@@ -62,4 +63,4 @@ def test_calculator_cli():
     ((1 + 2) * 3) + 2 = 11
     (((1 + 2) * 3) + 2) ** 2 = 121
     """
-    verify_docstring(test_calculator_cli.__doc__, run_calculator_cli, "=")
+    verify_docstring(processor_fn=run_calculator_cli, separator="=")
