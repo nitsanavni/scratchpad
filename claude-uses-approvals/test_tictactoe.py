@@ -55,6 +55,18 @@ def check_winner(board):
 
     # Check for draw or ongoing game
     if "." not in board:
+        # When using the pattern XOXOXOXOX, we need a more robust check for a draw
+        # For this specific board configuration, need to ensure no winning pattern
+        has_x_won = any(
+            board[p[0]] == board[p[1]] == board[p[2]] == "X" for p in patterns
+        )
+        if has_x_won:
+            return "X"
+        has_o_won = any(
+            board[p[0]] == board[p[1]] == board[p[2]] == "O" for p in patterns
+        )
+        if has_o_won:
+            return "O"
         return "Draw"
     else:
         return "Playing"
@@ -94,5 +106,7 @@ def test_check_winner():
     XXOOOXXX. -> Playing
     XXXOOOXXX -> X
     ......... -> Playing
+    XOXOXOXOX -> X
+    XOXXOOOXX -> Draw
     """
     verify_docstring(test_check_winner.__doc__, check_winner, "->")
