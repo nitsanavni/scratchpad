@@ -1,4 +1,4 @@
-from approvaltests import verify, Options
+from docstring_parser import verify_docstring
 
 
 def calculate(expression):
@@ -27,15 +27,4 @@ def test_calculator():
     42 = 42
     1 + 2 = 3
     """
-    test_cases = [
-        "",  # Empty string
-        "42",  # Single number
-        "1 + 2",  # Simple addition
-    ]
-
-    results = []
-    for expr in test_cases:
-        result = calculate(expr)
-        results.append(f"{expr} = {result}")
-
-    verify("\n".join(results), options=Options().inline())
+    verify_docstring(test_calculator.__doc__, calculate, "=")
