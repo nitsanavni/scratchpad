@@ -127,3 +127,21 @@ def test_from_roman():
     ABC -> 0
     """
     verify_docstring()
+
+
+def test_multiline():
+    """
+    I
+    ---
+    1
+    ===
+    IV
+    ---
+    4
+    """
+    verify_docstring(
+        processor_fn=from_roman,
+        vertical=True,
+        input_separator="---",
+        case_separator="===",
+    )
