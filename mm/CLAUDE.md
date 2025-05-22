@@ -18,12 +18,14 @@
 
 - **Problem**: Interactive CLI apps (like Ink apps) cannot be tested with regular Bash tool due to stdin/tty requirements
 - **Solution**: Use tmux tools for testing interactive CLI applications
+- **Setup**: First ask user to identify which tmux pane to use as sandbox via Bash tool
 - **Workflow**:
-  1. Use `mcp__tmux__read` to check current pane state first
-  2. Use `mcp__tmux__send_keys` to navigate to project directory
-  3. Use `mcp__tmux__send_keys` to run interactive CLI commands
-  4. Use `mcp__tmux__read` to verify output and behavior
-  5. Send keyboard inputs (arrows, q, etc.) via `mcp__tmux__send_keys`
+  1. Use Bash tool to ask user: "Which tmux pane should I use for testing? (e.g., window:pane like 1:0)"
+  2. Use `mcp__tmux__read` to check current pane state first
+  3. Use `mcp__tmux__send_keys` to navigate to project directory
+  4. Use `mcp__tmux__send_keys` to run interactive CLI commands
+  5. Use `mcp__tmux__read` to verify output and behavior
+  6. Send keyboard inputs (arrows, q, etc.) via `mcp__tmux__send_keys`
 
 ## Tech Stack Decisions
 
@@ -71,3 +73,14 @@
 - Roundtrip tests to ensure parse → format → parse integrity
 - Interactive testing via tmux tools for UI behavior
 - Comprehensive edge cases: empty files, deep nesting, irregular indentation
+
+# Meta-Learning & Documentation
+
+## Knowledge Capture Process
+
+- **Rule**: When we learn something new about workflow, tools, or technical decisions, immediately capture it in CLAUDE.md
+- **Process**:
+  1. Add new insights to relevant sections in CLAUDE.md
+  2. Commit and push changes to preserve knowledge
+  3. This creates a living document of project wisdom
+- **Benefits**: Future development, onboarding, and decision-making reference
