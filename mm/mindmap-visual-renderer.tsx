@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text } from "ink";
-import { formatMindmapVisual, MindmapLine } from "./mindmap-formatter.js";
 import { MindmapNode } from "./renderer.js";
+import { flattenNodesForNavigation } from "./navigation.js";
 
 interface MindmapVisualRendererProps {
   nodes: MindmapNode[];
@@ -9,14 +9,16 @@ interface MindmapVisualRendererProps {
 }
 
 export function MindmapVisualRenderer({ nodes, selectedIndex = -1 }: MindmapVisualRendererProps) {
-  const lines = formatMindmapVisual(nodes);
+  // Use same flattening as navigation to keep indices aligned
+  const flatNodes = flattenNodesForNavigation(nodes);
   
   return (
     <Box flexDirection="column">
-      {lines.map((line, index) => (
+      {flatNodes.map(({ node, depth }, index) => (
         <MindmapLineComponent 
           key={index} 
-          line={line} 
+          node={node}
+          depth={depth}
           isSelected={index === selectedIndex}
         />
       ))}
@@ -25,13 +27,14 @@ export function MindmapVisualRenderer({ nodes, selectedIndex = -1 }: MindmapVisu
 }
 
 interface MindmapLineComponentProps {
-  line: MindmapLine;
+  node: MindmapNode;
+  depth: number;
   isSelected: boolean;
 }
 
-function MindmapLineComponent({ line, isSelected }: MindmapLineComponentProps) {
-  const baseIndent = "  ".repeat(line.indent);
-  const connector = line.hasConnection ? "─ " : "  ";
+function MindmapLineComponent({ node, depth, isSelected }: MindmapLineComponentProps) {
+  const baseIndent = "  ".repeat(depth);
+  const connector = depth > 0 ? "─ " : "  ";
   const selector = isSelected ? "► " : "  ";
   
   return (
@@ -41,7 +44,7 @@ function MindmapLineComponent({ line, isSelected }: MindmapLineComponentProps) {
         color={isSelected ? "white" : "gray"}
         bold={isSelected}
       >
-        {selector}{baseIndent}{connector}{line.text}
+        {selector}{baseIndent}{connector}{node.text}
       </Text>
     </Box>
   );

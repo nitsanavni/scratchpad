@@ -67,10 +67,18 @@
   ```
 - **Mindmap Format** (for CLI display):
   ```
-         Child 1
-  Root ─ Child 2 ─ Grandchild
-         Child 3
+       Child 1
+  Root Child 2 ─ Grandchild
+       Child 3
   ```
+
+## Current Issues to Fix
+
+- **Visual Layout**: Children need to align based on parent text width (not fixed indentation)
+- **Navigation Logic**:
+  - Up/Down should move between siblings at same level
+  - Left/Right should move up/down hierarchy (parent/child)
+  - Current implementation uses flat list navigation instead of tree-aware navigation
 
 ## Development Lessons Learned
 

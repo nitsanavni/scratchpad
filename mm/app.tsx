@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Text, useApp, useInput } from "ink";
 import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
-import { flattenNodesForNavigation, getNextNodeIndex, getPrevNodeIndex, NavigationNode } from "./navigation.js";
-import { findParentIndex, findFirstChildIndex, findRootIndex } from "./enhanced-navigation.js";
+import { flattenNodesForNavigation, NavigationNode } from "./navigation.js";
+import { findNextSibling, findPrevSibling, findParent, findFirstChild } from "./tree-navigation.js";
 import { MindmapVisualRenderer } from "./mindmap-visual-renderer.js";
 
 interface AppProps {
@@ -38,19 +38,19 @@ export default function App({ filepath }: AppProps) {
     }
     
     if (key.upArrow) {
-      setSelectedIndex(getPrevNodeIndex(selectedIndex));
+      setSelectedIndex(findPrevSibling(selectedIndex, flatNodes));
     }
     
     if (key.downArrow) {
-      setSelectedIndex(getNextNodeIndex(selectedIndex, flatNodes.length - 1));
+      setSelectedIndex(findNextSibling(selectedIndex, flatNodes));
     }
     
     if (key.leftArrow) {
-      setSelectedIndex(findParentIndex(selectedIndex, flatNodes));
+      setSelectedIndex(findParent(selectedIndex, flatNodes));
     }
     
     if (key.rightArrow) {
-      setSelectedIndex(findFirstChildIndex(selectedIndex, flatNodes));
+      setSelectedIndex(findFirstChild(selectedIndex, flatNodes));
     }
   });
 
