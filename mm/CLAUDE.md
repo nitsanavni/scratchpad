@@ -18,14 +18,15 @@
 
 - **Problem**: Interactive CLI apps (like Ink apps) cannot be tested with regular Bash tool due to stdin/tty requirements
 - **Solution**: Use tmux tools for testing interactive CLI applications
-- **Setup**: First ask user to identify which tmux pane to use as sandbox via Bash tool
+- **Setup**: Establish a tmux sandbox for the session
 - **Workflow**:
-  1. Use Bash tool to ask user: "Which tmux pane should I use for testing? (e.g., window:pane like 1:0)"
+  1. Use Bash tool with tmux commands to rename/setup a sandbox window (e.g., `tmux rename-window -t 1 mm-claude-sandbox`)
   2. Use `mcp__tmux__read` to check current pane state first
   3. Use `mcp__tmux__send_keys` to navigate to project directory
   4. Use `mcp__tmux__send_keys` to run interactive CLI commands
   5. Use `mcp__tmux__read` to verify output and behavior
   6. Send keyboard inputs (arrows, q, etc.) via `mcp__tmux__send_keys`
+- **Important**: The Bash tool is for tmux CLI commands, not for asking the user questions. Claude should establish and use a consistent sandbox window per session.
 
 ## Tech Stack Decisions
 

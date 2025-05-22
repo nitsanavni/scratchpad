@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Text, useApp, useInput } from "ink";
 import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
+import { flattenNodesForNavigation, getNextNodeIndex, getPrevNodeIndex, NavigationNode } from "./navigation.js";
 
 interface AppProps {
   filepath: string;
@@ -27,28 +28,19 @@ export default function App({ filepath }: AppProps) {
   }, [filepath]);
 
   // Flatten nodes for navigation
-  const flatNodes: { node: MindmapNode; depth: number }[] = [];
-  
-  function flattenNodes(nodeList: MindmapNode[], depth = 0) {
-    for (const node of nodeList) {
-      flatNodes.push({ node, depth });
-      flattenNodes(node.children, depth + 1);
-    }
-  }
-  
-  flattenNodes(nodes);
+  const flatNodes = flattenNodesForNavigation(nodes);
 
   useInput((input, key) => {
     if (input === "q" || (key.ctrl && input === "c")) {
       exit();
     }
     
-    if (key.upArrow && selectedIndex > 0) {
-      setSelectedIndex(selectedIndex - 1);
+    if (key.upArrow) {
+      setSelectedIndex(getPrevNodeIndex(selectedIndex));
     }
     
-    if (key.downArrow && selectedIndex < flatNodes.length - 1) {
-      setSelectedIndex(selectedIndex + 1);
+    if (key.downArrow) {
+      setSelectedIndex(getNextNodeIndex(selectedIndex, flatNodes.length - 1));
     }
   });
 
@@ -80,12 +72,13 @@ export default function App({ filepath }: AppProps) {
           const isSelected = index === selectedIndex;
           
           return (
-            <Box key={index}>
+            <Box key={`${node.text}-${index}`}>
               <Text 
                 backgroundColor={isSelected ? "blue" : undefined}
-                color={isSelected ? "white" : undefined}
+                color={isSelected ? "white" : "gray"}
+                bold={isSelected}
               >
-                {indent}{bullet} {node.text}
+                {isSelected ? "► " : "  "}{indent}{bullet} {node.text}
               </Text>
             </Box>
           );
