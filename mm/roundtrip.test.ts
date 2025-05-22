@@ -18,7 +18,8 @@ describe("Roundtrip Tests", () => {
   });
 
   it("should preserve deep nesting", () => {
-    const original = "Root\n  Level 1\n    Level 2\n      Level 3\n        Level 4";
+    const original =
+      "Root\n  Level 1\n    Level 2\n      Level 3\n        Level 4";
     const parsed = parseMindmapFile(original);
     const formatted = formatToMindmap(parsed);
     expect(formatted).toBe(original);
@@ -46,7 +47,8 @@ describe("Roundtrip Tests", () => {
   });
 
   it("should handle complex mixed structure", () => {
-    const original = "Project\n  Frontend\n    React\n      Components\n        Header\n        Footer\n    Styling\n      CSS\n      Tailwind\n  Backend\n    API\n      REST\n      GraphQL\n    Database\n      PostgreSQL\nDocumentation\n  README\n  API Docs";
+    const original =
+      "Project\n  Frontend\n    React\n      Components\n        Header\n        Footer\n    Styling\n      CSS\n      Tailwind\n  Backend\n    API\n      REST\n      GraphQL\n    Database\n      PostgreSQL\nDocumentation\n  README\n  API Docs";
     const parsed = parseMindmapFile(original);
     const formatted = formatToMindmap(parsed);
     expect(formatted).toBe(original);
