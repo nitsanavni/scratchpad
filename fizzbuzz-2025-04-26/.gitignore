@@ -1,1 +1,9 @@
+# Compiled binaries
+fizzbuzz
+*.out
+*.exe
+
+# Python cache
 __pycache__/
+*.pyc
+.pytest_cache/
