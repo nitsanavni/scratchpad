@@ -38,8 +38,7 @@ function EnhancedLineComponent({ line, selectedIndex }: EnhancedLineComponentPro
   line.nodes.forEach((layoutNode, nodeIndex) => {
     const isSelected = layoutNode.nodeIndex === selectedIndex;
     const prefix = isSelected ? "> " : "- ";
-    const connector = nodeIndex > 0 ? "─ " : "";
-    const fullText = prefix + connector + layoutNode.text;
+    const fullText = prefix + layoutNode.text;
     
     // Calculate the actual position (subtract 2 for the prefix we already accounted for)
     const actualPosition = layoutNode.xOffset - 2;
