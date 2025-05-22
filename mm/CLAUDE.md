@@ -72,13 +72,17 @@
        Child 3
   ```
 
-## Current Issues to Fix
+## Visual Layout Improvements (In Progress)
 
-- **Visual Layout**: Children need to align based on parent text width (not fixed indentation)
-- **Navigation Logic**:
-  - Up/Down should move between siblings at same level
-  - Left/Right should move up/down hierarchy (parent/child)
-  - Current implementation uses flat list navigation instead of tree-aware navigation
+- **Parent Positioning**: Parents should be vertically centered among all their descendants
+- **Selection Marker**: Should replace existing space, not shift text position
+- **Node Prefixes**: Consistent dash (-) before each node, becomes (>) when selected
+
+## Completed Fixes
+
+- ✅ **Horizontal Layout**: Children positioned to the right of parents based on text width
+- ✅ **Tree Navigation**: Up/Down for siblings, Left/Right for hierarchy
+- ✅ **Visual Hierarchy**: Proper parent-child relationships with connecting lines
 
 ## Development Lessons Learned
 

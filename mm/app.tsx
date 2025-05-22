@@ -4,7 +4,7 @@ import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation, NavigationNode } from "./navigation.js";
 import { findNextSibling, findPrevSibling, findParent, findFirstChild } from "./tree-navigation.js";
-import { HorizontalMindmapRenderer } from "./horizontal-mindmap-renderer.js";
+import { EnhancedMindmapRenderer } from "./enhanced-mindmap-renderer.js";
 
 interface AppProps {
   filepath: string;
@@ -76,7 +76,7 @@ export default function App({ filepath }: AppProps) {
       <Text bold>Mindmap Viewer - {filepath}</Text>
       <Text dimColor>Use ↑/↓/←/→ to navigate, 'q' to quit</Text>
       <Box marginTop={1}>
-        <HorizontalMindmapRenderer nodes={nodes} selectedIndex={selectedIndex} />
+        <EnhancedMindmapRenderer nodes={nodes} selectedIndex={selectedIndex} />
       </Box>
     </Box>
   );
