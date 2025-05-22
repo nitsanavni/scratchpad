@@ -9,4 +9,5 @@
 
 - Commit and push very often
 - Use prettier for code formatting: `bunx prettier --write .`
-- Consider setting up prettier as git hook
+- Git hooks are in `.githooks/` directory
+- Run `.githooks/install.sh` to install hooks

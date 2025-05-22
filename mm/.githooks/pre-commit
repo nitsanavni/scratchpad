@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Format TypeScript files with prettier in mm directory
+if [ -d "mm" ]; then
+  cd mm
+  if [ -f "package.json" ]; then
+    bunx prettier --write "*.ts" "*.js" "*.json" "*.md" 2>/dev/null || true
+    git add -A
+  fi
+  cd ..
+fi
