@@ -85,3 +85,33 @@
   2. Commit and push changes to preserve knowledge
   3. This creates a living document of project wisdom
 - **Benefits**: Future development, onboarding, and decision-making reference
+
+# Interactive Editor Design
+
+## Editor Modes
+
+- **Navigation Mode**: Browse and navigate the mindmap
+- **Edit Mode**: Edit text content of a node
+
+## Keyboard Controls
+
+### Navigation Mode
+
+- `↑/↓`: Navigate between nodes (current implementation)
+- `←`: Go to parent node
+- `→`: Go to first child node
+- `Enter`: Add sibling below current node and enter edit mode
+- `Esc`: Navigate to root node (double-tap)
+- `q`: Quit application
+
+### Edit Mode
+
+- `Enter`: Save and return to navigation mode
+- `Tab`: Add child node and continue editing
+- `Esc`: Cancel edit and return to navigation mode
+- Text input: Edit node content
+
+## Auto-Save
+
+- Save happens continuously/automatically
+- No manual save required

@@ -3,6 +3,7 @@ import { Box, Text, useApp, useInput } from "ink";
 import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation, getNextNodeIndex, getPrevNodeIndex, NavigationNode } from "./navigation.js";
+import { findParentIndex, findFirstChildIndex, findRootIndex } from "./enhanced-navigation.js";
 
 interface AppProps {
   filepath: string;
@@ -42,6 +43,14 @@ export default function App({ filepath }: AppProps) {
     if (key.downArrow) {
       setSelectedIndex(getNextNodeIndex(selectedIndex, flatNodes.length - 1));
     }
+    
+    if (key.leftArrow) {
+      setSelectedIndex(findParentIndex(selectedIndex, flatNodes));
+    }
+    
+    if (key.rightArrow) {
+      setSelectedIndex(findFirstChildIndex(selectedIndex, flatNodes));
+    }
   });
 
   if (error) {
@@ -64,7 +73,7 @@ export default function App({ filepath }: AppProps) {
   return (
     <Box flexDirection="column">
       <Text bold>Mindmap Viewer - {filepath}</Text>
-      <Text dimColor>Use ↑/↓ to navigate, 'q' to quit</Text>
+      <Text dimColor>Use ↑/↓/←/→ to navigate, 'q' to quit</Text>
       <Box marginTop={1} flexDirection="column">
         {flatNodes.map(({ node, depth }, index) => {
           const indent = "  ".repeat(depth);
