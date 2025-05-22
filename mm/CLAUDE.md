@@ -52,7 +52,25 @@
 
 - **Format**: Plain text with double-space indentation for hierarchy
 - **Parser**: Custom parser that handles irregular indentation gracefully
-- **Formatter**: Bidirectional conversion (parse ↔ format) with roundtrip tests
+- **Formatters**: Two distinct formatters for different purposes
+  - **Outline Formatter**: Saves back to .mm files (vertical, indented)
+  - **Mindmap Formatter**: Visual display in CLI (horizontal, tree-like)
+
+### Formatter Types
+
+- **Outline Format** (for file storage):
+  ```
+  Root
+    Child 1
+    Child 2
+      Grandchild
+  ```
+- **Mindmap Format** (for CLI display):
+  ```
+         Child 1
+  Root ─ Child 2 ─ Grandchild
+         Child 3
+  ```
 
 ## Development Lessons Learned
 

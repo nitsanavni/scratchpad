@@ -4,6 +4,7 @@ import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation, getNextNodeIndex, getPrevNodeIndex, NavigationNode } from "./navigation.js";
 import { findParentIndex, findFirstChildIndex, findRootIndex } from "./enhanced-navigation.js";
+import { MindmapVisualRenderer } from "./mindmap-visual-renderer.js";
 
 interface AppProps {
   filepath: string;
@@ -74,24 +75,8 @@ export default function App({ filepath }: AppProps) {
     <Box flexDirection="column">
       <Text bold>Mindmap Viewer - {filepath}</Text>
       <Text dimColor>Use ↑/↓/←/→ to navigate, 'q' to quit</Text>
-      <Box marginTop={1} flexDirection="column">
-        {flatNodes.map(({ node, depth }, index) => {
-          const indent = "  ".repeat(depth);
-          const bullet = depth === 0 ? "•" : "◦";
-          const isSelected = index === selectedIndex;
-          
-          return (
-            <Box key={`${node.text}-${index}`}>
-              <Text 
-                backgroundColor={isSelected ? "blue" : undefined}
-                color={isSelected ? "white" : "gray"}
-                bold={isSelected}
-              >
-                {isSelected ? "► " : "  "}{indent}{bullet} {node.text}
-              </Text>
-            </Box>
-          );
-        })}
+      <Box marginTop={1}>
+        <MindmapVisualRenderer nodes={nodes} selectedIndex={selectedIndex} />
       </Box>
     </Box>
   );
