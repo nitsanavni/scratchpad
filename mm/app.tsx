@@ -5,14 +5,20 @@ import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation, NavigationNode } from "./navigation.js";
 import { findNextSibling, findPrevSibling, findParent, findFirstChild } from "./tree-navigation.js";
 import { EnhancedMindmapRenderer } from "./enhanced-mindmap-renderer.js";
+import { 
+  EditorState, 
+  createInitialEditorState, 
+  addSiblingNode,
+  addChildNode,
+  updateNodeText 
+} from "./editor-state.js";
 
 interface AppProps {
   filepath: string;
 }
 
 export default function App({ filepath }: AppProps) {
-  const [nodes, setNodes] = useState<MindmapNode[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [editorState, setEditorState] = useState<EditorState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { exit } = useApp();
 
@@ -21,7 +27,8 @@ export default function App({ filepath }: AppProps) {
       try {
         const content = await readMindmapFile(filepath);
         const parsed = parseMindmapFile(content);
-        setNodes(parsed);
+        const initialState = createInitialEditorState(parsed);
+        setEditorState(initialState);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       }
@@ -29,28 +36,94 @@ export default function App({ filepath }: AppProps) {
     loadFile();
   }, [filepath]);
 
-  // Flatten nodes for navigation
+  // Get current state values
+  const nodes = editorState?.nodes || [];
+  const selectedIndex = editorState?.selectedIndex || 0;
+  const mode = editorState?.mode || "navigation";
   const flatNodes = flattenNodesForNavigation(nodes);
 
   useInput((input, key) => {
+    if (!editorState) return;
+    
     if (input === "q" || (key.ctrl && input === "c")) {
       exit();
     }
     
-    if (key.upArrow) {
-      setSelectedIndex(findPrevSibling(selectedIndex, flatNodes));
-    }
-    
-    if (key.downArrow) {
-      setSelectedIndex(findNextSibling(selectedIndex, flatNodes));
-    }
-    
-    if (key.leftArrow) {
-      setSelectedIndex(findParent(selectedIndex, flatNodes));
-    }
-    
-    if (key.rightArrow) {
-      setSelectedIndex(findFirstChild(selectedIndex, flatNodes));
+    if (mode === "navigation") {
+      if (key.upArrow) {
+        setEditorState({
+          ...editorState,
+          selectedIndex: findPrevSibling(selectedIndex, flatNodes)
+        });
+      }
+      
+      if (key.downArrow) {
+        setEditorState({
+          ...editorState,
+          selectedIndex: findNextSibling(selectedIndex, flatNodes)
+        });
+      }
+      
+      if (key.leftArrow) {
+        setEditorState({
+          ...editorState,
+          selectedIndex: findParent(selectedIndex, flatNodes)
+        });
+      }
+      
+      if (key.rightArrow) {
+        setEditorState({
+          ...editorState,
+          selectedIndex: findFirstChild(selectedIndex, flatNodes)
+        });
+      }
+      
+      if (key.return) {
+        // Enter key: add sibling and enter edit mode
+        const newState = addSiblingNode(editorState, "");
+        setEditorState({
+          ...newState,
+          mode: "edit",
+          editingIndex: newState.selectedIndex,
+          editingText: ""
+        });
+      }
+    } else if (mode === "edit") {
+      if (key.escape) {
+        // Exit edit mode without saving
+        setEditorState({
+          ...editorState,
+          mode: "navigation",
+          editingIndex: -1,
+          editingText: ""
+        });
+      }
+      
+      if (key.return) {
+        // Save and exit edit mode
+        const updatedState = updateNodeText(editorState, editorState.editingIndex, editorState.editingText);
+        setEditorState({
+          ...updatedState,
+          mode: "navigation",
+          editingIndex: -1,
+          editingText: ""
+        });
+      }
+      
+      // Handle text input
+      if (input && !key.return && !key.escape) {
+        setEditorState({
+          ...editorState,
+          editingText: editorState.editingText + input
+        });
+      }
+      
+      if (key.backspace || key.delete) {
+        setEditorState({
+          ...editorState,
+          editingText: editorState.editingText.slice(0, -1)
+        });
+      }
     }
   });
 
@@ -63,7 +136,7 @@ export default function App({ filepath }: AppProps) {
     );
   }
 
-  if (flatNodes.length === 0) {
+  if (!editorState || flatNodes.length === 0) {
     return (
       <Box>
         <Text dimColor>Loading...</Text>
@@ -73,10 +146,20 @@ export default function App({ filepath }: AppProps) {
 
   return (
     <Box flexDirection="column">
-      <Text bold>Mindmap Viewer - {filepath}</Text>
-      <Text dimColor>Use ↑/↓/←/→ to navigate, 'q' to quit</Text>
+      <Text bold>Mindmap Editor - {filepath}</Text>
+      <Text dimColor>
+        {mode === "navigation" 
+          ? "Use ↑/↓/←/→ to navigate, Enter to add node, 'q' to quit"
+          : "Edit mode: Type to edit, Enter to save, Esc to cancel"
+        }
+      </Text>
       <Box marginTop={1}>
-        <EnhancedMindmapRenderer nodes={nodes} selectedIndex={selectedIndex} />
+        <EnhancedMindmapRenderer 
+          nodes={nodes} 
+          selectedIndex={selectedIndex}
+          editingIndex={editorState.editingIndex}
+          editingText={editorState.editingText}
+        />
       </Box>
     </Box>
   );
