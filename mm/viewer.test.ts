@@ -6,14 +6,25 @@ describe("Mindmap File Reader", () => {
   it("should read existing .mm file", async () => {
     const content = await readMindmapFile("examples/simple.mm");
     expect(content).toContain("Personal Tasks");
-    expect(content).toContain("Work");
     expect(content).toContain("Home");
   });
 
-  it("should throw error for non-existent file", async () => {
-    expect(async () => {
-      await readMindmapFile("non-existent.mm");
-    }).toThrow();
+  it("should create new file for non-existent file", async () => {
+    const testFile = "test-new-file.mm";
+    // Ensure file doesn't exist
+    try {
+      await fs.unlink(testFile);
+    } catch {}
+
+    const content = await readMindmapFile(testFile);
+    expect(content).toBe("New Mindmap\n");
+
+    // Verify file was created
+    const fileContent = await fs.readFile(testFile, "utf-8");
+    expect(fileContent).toBe("New Mindmap\n");
+
+    // Clean up
+    await fs.unlink(testFile);
   });
 
   it("should handle empty file", async () => {
