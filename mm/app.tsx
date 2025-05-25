@@ -17,6 +17,8 @@ import {
   addChildNode,
   updateNodeText,
 } from "./editor-state.js";
+import { formatToMindmap } from "./formatter.js";
+import { promises as fs } from "fs";
 
 interface AppProps {
   filepath: string;
@@ -26,6 +28,15 @@ export default function App({ filepath }: AppProps) {
   const [editorState, setEditorState] = useState<EditorState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { exit } = useApp();
+
+  const autoSave = async (nodes: MindmapNode[]) => {
+    try {
+      const content = formatToMindmap(nodes);
+      await fs.writeFile(filepath, content, "utf-8");
+    } catch (err) {
+      console.error("Auto-save failed:", err);
+    }
+  };
 
   useEffect(() => {
     async function loadFile() {
@@ -92,6 +103,7 @@ export default function App({ filepath }: AppProps) {
           editingIndex: newState.selectedIndex,
           editingText: "",
         });
+        autoSave(newState.nodes);
       }
     } else if (mode === "edit") {
       if (key.escape) {
@@ -117,6 +129,7 @@ export default function App({ filepath }: AppProps) {
           editingIndex: -1,
           editingText: "",
         });
+        autoSave(updatedState.nodes);
       }
 
       // Handle text input
