@@ -30,7 +30,10 @@ export function parseMindmapFile(content: string): MindmapNode[] {
       nodes.push(node);
     } else {
       // Child node
-      stack[stack.length - 1].children.push(node);
+      const parent = stack[stack.length - 1];
+      if (parent) {
+        parent.children.push(node);
+      }
     }
 
     stack.push(node);

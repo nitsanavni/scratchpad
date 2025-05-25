@@ -7,7 +7,7 @@ import {
   findRootIndex,
 } from "./enhanced-navigation";
 import { flattenNodesForNavigation } from "./navigation";
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 
 describe("Enhanced Navigation", () => {
   const sampleNodes: MindmapNode[] = [

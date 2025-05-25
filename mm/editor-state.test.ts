@@ -1,12 +1,12 @@
 import { describe, it, expect } from "bun:test";
 import {
-  EditorState,
   addSiblingNode,
   addChildNode,
   updateNodeText,
   createInitialEditorState,
 } from "./editor-state";
-import { MindmapNode } from "./renderer";
+import type { EditorState } from "./editor-state";
+import type { MindmapNode } from "./renderer";
 
 describe("Editor State", () => {
   const sampleNodes: MindmapNode[] = [
@@ -38,8 +38,8 @@ describe("Editor State", () => {
 
     const newState = addSiblingNode(state, "New Sibling");
 
-    expect(newState.nodes[0].children).toHaveLength(3);
-    expect(newState.nodes[0].children[1].text).toBe("New Sibling");
+    expect(newState.nodes[0]!.children).toHaveLength(3);
+    expect(newState.nodes[0]!.children[1]!.text).toBe("New Sibling");
     expect(newState.selectedIndex).toBe(2); // Should select the new node
   });
 
@@ -49,8 +49,8 @@ describe("Editor State", () => {
 
     const newState = addChildNode(state, "New Child");
 
-    expect(newState.nodes[0].children).toHaveLength(3);
-    expect(newState.nodes[0].children[2].text).toBe("New Child");
+    expect(newState.nodes[0]!.children).toHaveLength(3);
+    expect(newState.nodes[0]!.children[2]!.text).toBe("New Child");
     expect(newState.selectedIndex).toBe(3); // Should select the new node
   });
 
@@ -60,7 +60,7 @@ describe("Editor State", () => {
 
     const newState = updateNodeText(state, 1, "Updated Child 1");
 
-    expect(newState.nodes[0].children[0].text).toBe("Updated Child 1");
+    expect(newState.nodes[0]!.children[0]!.text).toBe("Updated Child 1");
   });
 
   it("should handle adding sibling to root node", () => {
@@ -70,7 +70,7 @@ describe("Editor State", () => {
     const newState = addSiblingNode(state, "New Root");
 
     expect(newState.nodes).toHaveLength(2);
-    expect(newState.nodes[1].text).toBe("New Root");
+    expect(newState.nodes[1]!.text).toBe("New Root");
     expect(newState.selectedIndex).toBe(1);
   });
 });

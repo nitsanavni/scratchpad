@@ -1,5 +1,5 @@
-import { NavigationNode } from "./navigation";
-import { MindmapNode } from "./renderer";
+import type { NavigationNode } from "./navigation";
+import type { MindmapNode } from "./renderer";
 
 export function findParentIndex(
   currentIndex: number,
@@ -8,6 +8,7 @@ export function findParentIndex(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
+  if (!currentNode) return currentIndex;
   const currentPath = currentNode.path;
 
   // If already at root level, stay there
@@ -18,6 +19,7 @@ export function findParentIndex(
 
   for (let i = currentIndex - 1; i >= 0; i--) {
     const node = flatNodes[i];
+    if (!node) continue;
     if (arraysEqual(node.path, parentPath)) {
       return i;
     }
@@ -33,10 +35,12 @@ export function findFirstChildIndex(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
+  if (!currentNode) return currentIndex;
 
   // Check if there's a next node and if it's a child
   if (currentIndex + 1 < flatNodes.length) {
     const nextNode = flatNodes[currentIndex + 1];
+    if (!nextNode) return currentIndex;
     if (nextNode.depth === currentNode.depth + 1) {
       return currentIndex + 1;
     }
@@ -53,11 +57,15 @@ export function findRootIndex(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
-  const rootPath = [currentNode.path[0]]; // First element is the root index
+  if (!currentNode) return currentIndex;
+  const rootIndex = currentNode.path[0];
+  if (rootIndex === undefined) return currentIndex;
+  const rootPath = [rootIndex]; // First element is the root index
 
   // Find the root node by looking for path with single element
   for (let i = 0; i < flatNodes.length; i++) {
     const node = flatNodes[i];
+    if (!node) continue;
     if (arraysEqual(node.path, rootPath)) {
       return i;
     }

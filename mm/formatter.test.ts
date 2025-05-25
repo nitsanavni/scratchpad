@@ -1,6 +1,6 @@
 import { describe, it, expect } from "bun:test";
 import { formatToMindmap } from "./formatter";
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 
 describe("Mindmap Formatter", () => {
   it("should format simple flat list", () => {

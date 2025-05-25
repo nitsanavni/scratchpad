@@ -6,7 +6,7 @@ import {
   findFirstChild,
 } from "./tree-navigation";
 import { flattenNodesForNavigation } from "./navigation";
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 
 describe("Tree Navigation", () => {
   const sampleNodes: MindmapNode[] = [

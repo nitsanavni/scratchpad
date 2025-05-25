@@ -1,4 +1,4 @@
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 
 export interface MindmapLine {
   text: string;
@@ -12,6 +12,7 @@ export function formatMindmapVisual(nodes: MindmapNode[]): MindmapLine[] {
 
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
+    if (!node) continue;
     const isLastRoot = i === nodes.length - 1;
 
     formatNode(node, 0, lines, isLastRoot);
@@ -35,7 +36,9 @@ function formatNode(
 
     // Children above the parent
     for (let i = 0; i < midPoint; i++) {
-      formatNode(children[i], baseIndent + 1, lines, false);
+      const child = children[i];
+      if (!child) continue;
+      formatNode(child, baseIndent + 1, lines, false);
     }
 
     // The parent node
@@ -48,8 +51,10 @@ function formatNode(
 
     // Children below the parent
     for (let i = midPoint; i < children.length; i++) {
+      const child = children[i];
+      if (!child) continue;
       const isLastChild = i === children.length - 1;
-      formatNode(children[i], baseIndent + 1, lines, isLastChild && isLast);
+      formatNode(child, baseIndent + 1, lines, isLastChild && isLast);
     }
   } else {
     // Leaf node - has connection if it's a child (indent > 0)

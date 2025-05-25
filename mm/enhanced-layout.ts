@@ -1,4 +1,4 @@
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 import { flattenNodesForNavigation } from "./navigation";
 
 export interface EnhancedLayoutNode {
@@ -63,16 +63,19 @@ function layoutNodeEnhanced(
 
   if (children.length === 1) {
     // Single child - put on same line
+    const firstChild = children[0];
+    if (!firstChild) return [];
+
     const childXOffset = actualXOffset + node.text.length + 1; // +1 for space
     const childLines = layoutNodeEnhanced(
-      children[0],
+      firstChild,
       childXOffset,
       nodeToIndex,
       startLineIndex,
     );
 
     // Add parent to the main line (first line) of the child
-    if (childLines.length > 0) {
+    if (childLines.length > 0 && childLines[0]) {
       childLines[0].nodes.unshift({
         text: node.text,
         xOffset: actualXOffset,
@@ -109,6 +112,7 @@ function layoutNodeEnhanced(
   let currentChildLineIndex = 0;
   for (let i = 0; i < childLineGroups.length; i++) {
     const childLines = childLineGroups[i];
+    if (!childLines) continue;
 
     for (const childLine of childLines) {
       const adjustedLine = {

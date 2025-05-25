@@ -1,4 +1,4 @@
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 
 export function formatToMindmap(nodes: MindmapNode[]): string {
   const lines: string[] = [];

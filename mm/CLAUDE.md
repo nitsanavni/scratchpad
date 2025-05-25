@@ -7,9 +7,9 @@
 
 # Development Workflow
 
-- **Always lint, commit and push**: After each small change or micro step, run `bunx prettier --write .`, then commit and push
+- **Always lint, commit and push**: After each small change or micro step, run `bun run lint`, then commit and push
 - Commit and push very often
-- Use prettier for code formatting: `bunx prettier --write .`
+- **Linting**: `bun run lint` (runs TypeScript checking and prettier formatting)
 - Git hooks are in `.githooks/` directory
 - Run `.githooks/install.sh` to install hooks
 
@@ -48,6 +48,8 @@
 - **Chosen**: Bun for TypeScript execution and package management
 - **Benefits**: Fast startup, native TypeScript support, npm-compatible
 - **Usage**: `bun test`, `bun add`, `bun run script.tsx`
+- **TypeScript checking**: `bunx tsc --noEmit` (check for type errors without emitting files)
+- **Search**: Use `rg` (ripgrep) instead of `grep` for faster searches
 - **Running the app**: `bun cli.tsx examples/simple.mm` (or any other .mm file)
 
 ### File Format: .mm

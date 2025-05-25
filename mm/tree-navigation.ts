@@ -1,4 +1,4 @@
-import { NavigationNode } from "./navigation";
+import type { NavigationNode } from "./navigation";
 
 export function findNextSibling(
   currentIndex: number,
@@ -7,6 +7,7 @@ export function findNextSibling(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
+  if (!currentNode) return currentIndex;
   const currentPath = currentNode.path;
   const currentDepth = currentNode.depth;
 
@@ -15,6 +16,7 @@ export function findNextSibling(
 
   for (let i = currentIndex + 1; i < flatNodes.length; i++) {
     const node = flatNodes[i];
+    if (!node) continue;
 
     // Found sibling: same depth and same parent path
     if (
@@ -40,6 +42,7 @@ export function findPrevSibling(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
+  if (!currentNode) return currentIndex;
   const currentPath = currentNode.path;
   const currentDepth = currentNode.depth;
 
@@ -48,6 +51,7 @@ export function findPrevSibling(
 
   for (let i = currentIndex - 1; i >= 0; i--) {
     const node = flatNodes[i];
+    if (!node) continue;
 
     // Found sibling: same depth and same parent path
     if (
@@ -73,6 +77,7 @@ export function findParent(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
+  if (!currentNode) return currentIndex;
   const currentPath = currentNode.path;
 
   // If already at root level, stay there
@@ -83,6 +88,7 @@ export function findParent(
 
   for (let i = currentIndex - 1; i >= 0; i--) {
     const node = flatNodes[i];
+    if (!node) continue;
     if (arraysEqual(node.path, parentPath)) {
       return i;
     }
@@ -98,10 +104,12 @@ export function findFirstChild(
   if (currentIndex >= flatNodes.length || currentIndex < 0) return currentIndex;
 
   const currentNode = flatNodes[currentIndex];
+  if (!currentNode) return currentIndex;
 
   // Check if there's a next node and if it's a child
   if (currentIndex + 1 < flatNodes.length) {
     const nextNode = flatNodes[currentIndex + 1];
+    if (!nextNode) return currentIndex;
     if (nextNode.depth === currentNode.depth + 1) {
       return currentIndex + 1;
     }

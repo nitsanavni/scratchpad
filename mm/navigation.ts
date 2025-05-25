@@ -1,4 +1,4 @@
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 
 export interface NavigationNode {
   node: MindmapNode;
@@ -14,6 +14,7 @@ export function flattenNodesForNavigation(
   function traverse(nodeList: MindmapNode[], depth = 0, path: number[] = []) {
     for (let i = 0; i < nodeList.length; i++) {
       const node = nodeList[i];
+      if (!node) continue;
       const currentPath = [...path, i];
 
       result.push({

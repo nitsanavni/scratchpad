@@ -1,4 +1,4 @@
-import { MindmapNode } from "./renderer";
+import type { MindmapNode } from "./renderer";
 import { flattenNodesForNavigation } from "./navigation";
 
 export interface EditorState {
@@ -40,6 +40,7 @@ export function addSiblingNode(
   if (currentNode.depth === 0) {
     // Adding sibling to root node
     const rootIndex = currentNode.path[0];
+    if (rootIndex === undefined) return state;
     newNodes.splice(rootIndex + 1, 0, newNode);
 
     return {
@@ -52,11 +53,19 @@ export function addSiblingNode(
     const path = currentNode.path;
     const parentPath = path.slice(0, -1);
     const siblingIndex = path[path.length - 1];
+    if (siblingIndex === undefined) return state;
 
     // Find parent node
-    let parent = newNodes[parentPath[0]];
+    const parentRootIndex = parentPath[0];
+    if (parentRootIndex === undefined) return state;
+    let parent = newNodes[parentRootIndex];
+    if (!parent) return state;
+
     for (let i = 1; i < parentPath.length; i++) {
-      parent = parent.children[parentPath[i]];
+      const parentIndex = parentPath[i];
+      if (parentIndex === undefined) return state;
+      parent = parent.children[parentIndex];
+      if (!parent) return state;
     }
 
     // Insert new sibling
@@ -97,10 +106,16 @@ export function addChildNode(
 
   // Find the actual node in the new structure and add child
   const path = currentNode.path;
-  let targetNode = newNodes[path[0]];
+  const rootIndex = path[0];
+  if (rootIndex === undefined) return state;
+  let targetNode = newNodes[rootIndex];
+  if (!targetNode) return state;
 
   for (let i = 1; i < path.length; i++) {
-    targetNode = targetNode.children[path[i]];
+    const childIndex = path[i];
+    if (childIndex === undefined) return state;
+    targetNode = targetNode.children[childIndex];
+    if (!targetNode) return state;
   }
 
   targetNode.children.push(newNode);
@@ -135,10 +150,16 @@ export function updateNodeText(
 
   // Find the actual node in the new structure and update text
   const path = targetNode.path;
-  let actualNode = newNodes[path[0]];
+  const rootIndex = path[0];
+  if (rootIndex === undefined) return state;
+  let actualNode = newNodes[rootIndex];
+  if (!actualNode) return state;
 
   for (let i = 1; i < path.length; i++) {
-    actualNode = actualNode.children[path[i]];
+    const childIndex = path[i];
+    if (childIndex === undefined) return state;
+    actualNode = actualNode.children[childIndex];
+    if (!actualNode) return state;
   }
 
   actualNode.text = newText;

@@ -2,7 +2,8 @@
 import React from "react";
 import { render, Box, Text } from "ink";
 import { readMindmapFile } from "./viewer.js";
-import { parseMindmapFile, MindmapNode } from "./renderer.js";
+import { parseMindmapFile } from "./renderer.js";
+import type { MindmapNode } from "./renderer.js";
 
 interface ViewerProps {
   filepath: string;

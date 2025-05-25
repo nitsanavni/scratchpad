@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text, useApp, useInput } from "ink";
 import { readMindmapFile } from "./viewer.js";
-import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
-import { flattenNodesForNavigation, NavigationNode } from "./navigation.js";
+import { parseMindmapFile, renderMindmap } from "./renderer.js";
+import type { MindmapNode } from "./renderer.js";
+import { flattenNodesForNavigation } from "./navigation.js";
+import type { NavigationNode } from "./navigation.js";
 import {
   findNextSibling,
   findPrevSibling,
@@ -11,12 +13,12 @@ import {
 } from "./tree-navigation.js";
 import { EnhancedMindmapRenderer } from "./enhanced-mindmap-renderer.js";
 import {
-  EditorState,
   createInitialEditorState,
   addSiblingNode,
   addChildNode,
   updateNodeText,
 } from "./editor-state.js";
+import type { EditorState } from "./editor-state.js";
 import { formatToMindmap } from "./formatter.js";
 import { promises as fs } from "fs";
 
