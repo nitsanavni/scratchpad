@@ -103,4 +103,28 @@ describe("Mindmap Formatter", () => {
     const result = formatToMindmap(nodes);
     expect(result).toBe("Root\n      Deep child\n  Shallow child");
   });
+
+  it("should format empty text nodes as dash", () => {
+    const nodes: MindmapNode[] = [
+      {
+        text: "Root",
+        level: 0,
+        children: [
+          {
+            text: "",
+            level: 1,
+            children: [],
+          },
+          {
+            text: "Child 2",
+            level: 1,
+            children: [],
+          },
+        ],
+      },
+    ];
+
+    const formatted = formatToMindmap(nodes);
+    expect(formatted).toBe("Root\n  -\n  Child 2");
+  });
 });

@@ -116,6 +116,21 @@ describe("Mindmap Parser", () => {
       },
     ]);
   });
+
+  it("should parse dash as empty text node", () => {
+    const input = "Root\n  -\n  Child 2";
+    const result = parseMindmapFile(input);
+    expect(result).toEqual([
+      {
+        text: "Root",
+        level: 0,
+        children: [
+          { text: "", level: 1, children: [] },
+          { text: "Child 2", level: 1, children: [] },
+        ],
+      },
+    ]);
+  });
 });
 
 describe("Mindmap Renderer", () => {

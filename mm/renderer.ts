@@ -11,7 +11,8 @@ export function parseMindmapFile(content: string): MindmapNode[] {
 
   for (const line of lines) {
     const level = Math.floor((line.length - line.trimStart().length) / 2);
-    const text = line.trim();
+    const trimmedText = line.trim();
+    const text = trimmedText === "-" ? "" : trimmedText;
 
     const node: MindmapNode = {
       text,

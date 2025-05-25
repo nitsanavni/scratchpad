@@ -5,7 +5,8 @@ export function formatToMindmap(nodes: MindmapNode[]): string {
 
   function formatNode(node: MindmapNode): void {
     const indent = "  ".repeat(node.level);
-    lines.push(`${indent}${node.text}`);
+    const text = node.text.trim() === "" ? "-" : node.text;
+    lines.push(`${indent}${text}`);
 
     for (const child of node.children) {
       formatNode(child);
