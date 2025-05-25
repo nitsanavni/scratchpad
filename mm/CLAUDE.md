@@ -7,6 +7,7 @@
 
 # Development Workflow
 
+- **Always lint, commit and push**: After each small change or micro step, run `bunx prettier --write .`, then commit and push
 - Commit and push very often
 - Use prettier for code formatting: `bunx prettier --write .`
 - Git hooks are in `.githooks/` directory
