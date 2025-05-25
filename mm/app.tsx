@@ -105,6 +105,18 @@ export default function App({ filepath }: AppProps) {
         });
         autoSave(newState.nodes);
       }
+
+      if (key.tab) {
+        // Tab key: add child and enter edit mode
+        const newState = addChildNode(editorState, "");
+        setEditorState({
+          ...newState,
+          mode: "edit",
+          editingIndex: newState.selectedIndex,
+          editingText: "",
+        });
+        autoSave(newState.nodes);
+      }
     } else if (mode === "edit") {
       if (key.escape) {
         // Exit edit mode without saving
@@ -132,8 +144,25 @@ export default function App({ filepath }: AppProps) {
         autoSave(updatedState.nodes);
       }
 
+      if (key.tab) {
+        // Tab key: save current edit, add child and continue editing
+        const savedState = updateNodeText(
+          editorState,
+          editorState.editingIndex,
+          editorState.editingText,
+        );
+        const newState = addChildNode(savedState, "");
+        setEditorState({
+          ...newState,
+          mode: "edit",
+          editingIndex: newState.selectedIndex,
+          editingText: "",
+        });
+        autoSave(newState.nodes);
+      }
+
       // Handle text input
-      if (input && !key.return && !key.escape) {
+      if (input && !key.return && !key.escape && !key.tab) {
         setEditorState({
           ...editorState,
           editingText: editorState.editingText + input,
