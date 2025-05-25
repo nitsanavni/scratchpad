@@ -8,15 +8,18 @@ interface MindmapVisualRendererProps {
   selectedIndex?: number;
 }
 
-export function MindmapVisualRenderer({ nodes, selectedIndex = -1 }: MindmapVisualRendererProps) {
+export function MindmapVisualRenderer({
+  nodes,
+  selectedIndex = -1,
+}: MindmapVisualRendererProps) {
   // Use same flattening as navigation to keep indices aligned
   const flatNodes = flattenNodesForNavigation(nodes);
-  
+
   return (
     <Box flexDirection="column">
       {flatNodes.map(({ node, depth }, index) => (
-        <MindmapLineComponent 
-          key={index} 
+        <MindmapLineComponent
+          key={index}
           node={node}
           depth={depth}
           isSelected={index === selectedIndex}
@@ -32,19 +35,26 @@ interface MindmapLineComponentProps {
   isSelected: boolean;
 }
 
-function MindmapLineComponent({ node, depth, isSelected }: MindmapLineComponentProps) {
+function MindmapLineComponent({
+  node,
+  depth,
+  isSelected,
+}: MindmapLineComponentProps) {
   const baseIndent = "  ".repeat(depth);
   const connector = depth > 0 ? "─ " : "  ";
   const selector = isSelected ? "► " : "  ";
-  
+
   return (
     <Box>
-      <Text 
+      <Text
         backgroundColor={isSelected ? "blue" : undefined}
         color={isSelected ? "white" : "gray"}
         bold={isSelected}
       >
-        {selector}{baseIndent}{connector}{node.text}
+        {selector}
+        {baseIndent}
+        {connector}
+        {node.text}
       </Text>
     </Box>
   );

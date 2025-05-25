@@ -36,11 +36,14 @@ function SimpleViewer({ filepath }: ViewerProps) {
   function renderNode(node: MindmapNode, depth = 0): React.ReactElement {
     const indent = "  ".repeat(depth);
     const bullet = depth === 0 ? "•" : "◦";
-    
+
     return (
       <Box key={`${node.text}-${depth}`} flexDirection="column">
-        <Text>{indent}{bullet} {node.text}</Text>
-        {node.children.map(child => renderNode(child, depth + 1))}
+        <Text>
+          {indent}
+          {bullet} {node.text}
+        </Text>
+        {node.children.map((child) => renderNode(child, depth + 1))}
       </Box>
     );
   }
@@ -49,7 +52,7 @@ function SimpleViewer({ filepath }: ViewerProps) {
     <Box flexDirection="column">
       <Text bold>📝 {filepath}</Text>
       <Box marginTop={1} flexDirection="column">
-        {nodes.map(node => renderNode(node))}
+        {nodes.map((node) => renderNode(node))}
       </Box>
     </Box>
   );

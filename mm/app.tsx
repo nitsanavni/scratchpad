@@ -3,14 +3,19 @@ import { Box, Text, useApp, useInput } from "ink";
 import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile, renderMindmap, MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation, NavigationNode } from "./navigation.js";
-import { findNextSibling, findPrevSibling, findParent, findFirstChild } from "./tree-navigation.js";
+import {
+  findNextSibling,
+  findPrevSibling,
+  findParent,
+  findFirstChild,
+} from "./tree-navigation.js";
 import { EnhancedMindmapRenderer } from "./enhanced-mindmap-renderer.js";
-import { 
-  EditorState, 
-  createInitialEditorState, 
+import {
+  EditorState,
+  createInitialEditorState,
   addSiblingNode,
   addChildNode,
-  updateNodeText 
+  updateNodeText,
 } from "./editor-state.js";
 
 interface AppProps {
@@ -44,40 +49,40 @@ export default function App({ filepath }: AppProps) {
 
   useInput((input, key) => {
     if (!editorState) return;
-    
+
     if (input === "q" || (key.ctrl && input === "c")) {
       exit();
     }
-    
+
     if (mode === "navigation") {
       if (key.upArrow) {
         setEditorState({
           ...editorState,
-          selectedIndex: findPrevSibling(selectedIndex, flatNodes)
+          selectedIndex: findPrevSibling(selectedIndex, flatNodes),
         });
       }
-      
+
       if (key.downArrow) {
         setEditorState({
           ...editorState,
-          selectedIndex: findNextSibling(selectedIndex, flatNodes)
+          selectedIndex: findNextSibling(selectedIndex, flatNodes),
         });
       }
-      
+
       if (key.leftArrow) {
         setEditorState({
           ...editorState,
-          selectedIndex: findParent(selectedIndex, flatNodes)
+          selectedIndex: findParent(selectedIndex, flatNodes),
         });
       }
-      
+
       if (key.rightArrow) {
         setEditorState({
           ...editorState,
-          selectedIndex: findFirstChild(selectedIndex, flatNodes)
+          selectedIndex: findFirstChild(selectedIndex, flatNodes),
         });
       }
-      
+
       if (key.return) {
         // Enter key: add sibling and enter edit mode
         const newState = addSiblingNode(editorState, "");
@@ -85,7 +90,7 @@ export default function App({ filepath }: AppProps) {
           ...newState,
           mode: "edit",
           editingIndex: newState.selectedIndex,
-          editingText: ""
+          editingText: "",
         });
       }
     } else if (mode === "edit") {
@@ -95,33 +100,37 @@ export default function App({ filepath }: AppProps) {
           ...editorState,
           mode: "navigation",
           editingIndex: -1,
-          editingText: ""
+          editingText: "",
         });
       }
-      
+
       if (key.return) {
         // Save and exit edit mode
-        const updatedState = updateNodeText(editorState, editorState.editingIndex, editorState.editingText);
+        const updatedState = updateNodeText(
+          editorState,
+          editorState.editingIndex,
+          editorState.editingText,
+        );
         setEditorState({
           ...updatedState,
           mode: "navigation",
           editingIndex: -1,
-          editingText: ""
+          editingText: "",
         });
       }
-      
+
       // Handle text input
       if (input && !key.return && !key.escape) {
         setEditorState({
           ...editorState,
-          editingText: editorState.editingText + input
+          editingText: editorState.editingText + input,
         });
       }
-      
+
       if (key.backspace || key.delete) {
         setEditorState({
           ...editorState,
-          editingText: editorState.editingText.slice(0, -1)
+          editingText: editorState.editingText.slice(0, -1),
         });
       }
     }
@@ -148,14 +157,13 @@ export default function App({ filepath }: AppProps) {
     <Box flexDirection="column">
       <Text bold>Mindmap Editor - {filepath}</Text>
       <Text dimColor>
-        {mode === "navigation" 
+        {mode === "navigation"
           ? "Use ↑/↓/←/→ to navigate, Enter to add node, 'q' to quit"
-          : "Edit mode: Type to edit, Enter to save, Esc to cancel"
-        }
+          : "Edit mode: Type to edit, Enter to save, Esc to cancel"}
       </Text>
       <Box marginTop={1}>
-        <EnhancedMindmapRenderer 
-          nodes={nodes} 
+        <EnhancedMindmapRenderer
+          nodes={nodes}
           selectedIndex={selectedIndex}
           editingIndex={editorState.editingIndex}
           editingText={editorState.editingText}

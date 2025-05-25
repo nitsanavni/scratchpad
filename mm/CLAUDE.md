@@ -47,6 +47,7 @@
 - **Chosen**: Bun for TypeScript execution and package management
 - **Benefits**: Fast startup, native TypeScript support, npm-compatible
 - **Usage**: `bun test`, `bun add`, `bun run script.tsx`
+- **Running the app**: `bun cli.tsx examples/simple.mm` (or any other .mm file)
 
 ### File Format: .mm
 
