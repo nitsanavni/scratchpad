@@ -176,3 +176,156 @@ export function updateNodeText(
     nodes: newNodes,
   };
 }
+
+export function moveNodeUp(state: EditorState): EditorState {
+  const flatNodes = flattenNodesForNavigation(state.nodes);
+  const currentNode = flatNodes[state.selectedIndex];
+
+  if (!currentNode) return state;
+
+  // Deep copy the nodes structure
+  const newNodes = JSON.parse(JSON.stringify(state.nodes)) as MindmapNode[];
+  const path = currentNode.path;
+
+  if (currentNode.depth === 0) {
+    // Moving root node up
+    const rootIndex = path[0];
+    if (rootIndex === undefined || rootIndex === 0) return state; // Can't move first root up
+
+    const nodeToMove = newNodes[rootIndex];
+    if (!nodeToMove) return state;
+
+    // Remove from current position and insert before previous sibling
+    newNodes.splice(rootIndex, 1);
+    newNodes.splice(rootIndex - 1, 0, nodeToMove);
+
+    // Update selected index to follow the moved node
+    const newFlatNodes = flattenNodesForNavigation(newNodes);
+    const newSelectedIndex = newFlatNodes.findIndex(
+      (flatNode) => flatNode.node === nodeToMove,
+    );
+
+    return {
+      ...state,
+      nodes: newNodes,
+      selectedIndex:
+        newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
+    };
+  } else {
+    // Moving child node up within its parent
+    const parentPath = path.slice(0, -1);
+    const siblingIndex = path[path.length - 1];
+    if (siblingIndex === undefined || siblingIndex === 0) return state; // Can't move first child up
+
+    // Find parent node
+    const parentRootIndex = parentPath[0];
+    if (parentRootIndex === undefined) return state;
+    let parent = newNodes[parentRootIndex];
+    if (!parent) return state;
+
+    for (let i = 1; i < parentPath.length; i++) {
+      const parentIndex = parentPath[i];
+      if (parentIndex === undefined) return state;
+      parent = parent.children[parentIndex];
+      if (!parent) return state;
+    }
+
+    const nodeToMove = parent.children[siblingIndex];
+    if (!nodeToMove) return state;
+
+    // Remove from current position and insert before previous sibling
+    parent.children.splice(siblingIndex, 1);
+    parent.children.splice(siblingIndex - 1, 0, nodeToMove);
+
+    // Update selected index to follow the moved node
+    const newFlatNodes = flattenNodesForNavigation(newNodes);
+    const newSelectedIndex = newFlatNodes.findIndex(
+      (flatNode) => flatNode.node === nodeToMove,
+    );
+
+    return {
+      ...state,
+      nodes: newNodes,
+      selectedIndex:
+        newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
+    };
+  }
+}
+
+export function moveNodeDown(state: EditorState): EditorState {
+  const flatNodes = flattenNodesForNavigation(state.nodes);
+  const currentNode = flatNodes[state.selectedIndex];
+
+  if (!currentNode) return state;
+
+  // Deep copy the nodes structure
+  const newNodes = JSON.parse(JSON.stringify(state.nodes)) as MindmapNode[];
+  const path = currentNode.path;
+
+  if (currentNode.depth === 0) {
+    // Moving root node down
+    const rootIndex = path[0];
+    if (rootIndex === undefined || rootIndex >= newNodes.length - 1)
+      return state; // Can't move last root down
+
+    const nodeToMove = newNodes[rootIndex];
+    if (!nodeToMove) return state;
+
+    // Remove from current position and insert after next sibling
+    newNodes.splice(rootIndex, 1);
+    newNodes.splice(rootIndex + 1, 0, nodeToMove);
+
+    // Update selected index to follow the moved node
+    const newFlatNodes = flattenNodesForNavigation(newNodes);
+    const newSelectedIndex = newFlatNodes.findIndex(
+      (flatNode) => flatNode.node === nodeToMove,
+    );
+
+    return {
+      ...state,
+      nodes: newNodes,
+      selectedIndex:
+        newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
+    };
+  } else {
+    // Moving child node down within its parent
+    const parentPath = path.slice(0, -1);
+    const siblingIndex = path[path.length - 1];
+    if (siblingIndex === undefined) return state;
+
+    // Find parent node
+    const parentRootIndex = parentPath[0];
+    if (parentRootIndex === undefined) return state;
+    let parent = newNodes[parentRootIndex];
+    if (!parent) return state;
+
+    for (let i = 1; i < parentPath.length; i++) {
+      const parentIndex = parentPath[i];
+      if (parentIndex === undefined) return state;
+      parent = parent.children[parentIndex];
+      if (!parent) return state;
+    }
+
+    if (siblingIndex >= parent.children.length - 1) return state; // Can't move last child down
+
+    const nodeToMove = parent.children[siblingIndex];
+    if (!nodeToMove) return state;
+
+    // Remove from current position and insert after next sibling
+    parent.children.splice(siblingIndex, 1);
+    parent.children.splice(siblingIndex + 1, 0, nodeToMove);
+
+    // Update selected index to follow the moved node
+    const newFlatNodes = flattenNodesForNavigation(newNodes);
+    const newSelectedIndex = newFlatNodes.findIndex(
+      (flatNode) => flatNode.node === nodeToMove,
+    );
+
+    return {
+      ...state,
+      nodes: newNodes,
+      selectedIndex:
+        newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
+    };
+  }
+}

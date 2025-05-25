@@ -17,6 +17,8 @@ import {
   addSiblingNode,
   addChildNode,
   updateNodeText,
+  moveNodeUp,
+  moveNodeDown,
 } from "./editor-state.js";
 import type { EditorState } from "./editor-state.js";
 import { formatToMindmap } from "./formatter.js";
@@ -69,17 +71,31 @@ export default function App({ filepath }: AppProps) {
 
     if (mode === "navigation") {
       if (key.upArrow) {
-        setEditorState({
-          ...editorState,
-          selectedIndex: findPrevSibling(selectedIndex, flatNodes),
-        });
+        if (key.ctrl) {
+          // Ctrl+Up: Move node up before previous sibling
+          const newState = moveNodeUp(editorState);
+          setEditorState(newState);
+          autoSave(newState.nodes);
+        } else {
+          setEditorState({
+            ...editorState,
+            selectedIndex: findPrevSibling(selectedIndex, flatNodes),
+          });
+        }
       }
 
       if (key.downArrow) {
-        setEditorState({
-          ...editorState,
-          selectedIndex: findNextSibling(selectedIndex, flatNodes),
-        });
+        if (key.ctrl) {
+          // Ctrl+Down: Move node down after next sibling
+          const newState = moveNodeDown(editorState);
+          setEditorState(newState);
+          autoSave(newState.nodes);
+        } else {
+          setEditorState({
+            ...editorState,
+            selectedIndex: findNextSibling(selectedIndex, flatNodes),
+          });
+        }
       }
 
       if (key.leftArrow) {
