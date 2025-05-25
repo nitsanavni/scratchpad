@@ -43,10 +43,17 @@ export function addSiblingNode(
     if (rootIndex === undefined) return state;
     newNodes.splice(rootIndex + 1, 0, newNode);
 
+    // Calculate new selected index by finding the new node in flattened navigation
+    const newFlatNodes = flattenNodesForNavigation(newNodes);
+    const newSelectedIndex = newFlatNodes.findIndex(
+      (flatNode) => flatNode.node === newNode,
+    );
+
     return {
       ...state,
       nodes: newNodes,
-      selectedIndex: state.selectedIndex + 1,
+      selectedIndex:
+        newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
     };
   } else {
     // Adding sibling to child node

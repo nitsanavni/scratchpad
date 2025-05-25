@@ -71,6 +71,6 @@ describe("Editor State", () => {
 
     expect(newState.nodes).toHaveLength(2);
     expect(newState.nodes[1]!.text).toBe("New Root");
-    expect(newState.selectedIndex).toBe(1);
+    expect(newState.selectedIndex).toBe(3); // Should select the new root node in flattened navigation
   });
 });
