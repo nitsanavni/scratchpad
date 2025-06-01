@@ -336,7 +336,7 @@ export function moveNodeRight(state: EditorState): EditorState {
 
   if (!currentNode) return state;
 
-  // Can't move into previous sibling if we're the first child or root
+  // Can't move into previous sibling if we're the first child
   const path = currentNode.path;
   const siblingIndex = path[path.length - 1];
   if (siblingIndex === undefined || siblingIndex === 0) return state;
@@ -348,8 +348,26 @@ export function moveNodeRight(state: EditorState): EditorState {
   let nodeToMove: MindmapNode | undefined;
 
   if (currentNode.depth === 0) {
-    // Can't move root nodes into siblings
-    return state;
+    // Handle root nodes - move into previous root as child
+    nodeToMove = newNodes[siblingIndex];
+    if (!nodeToMove) return state;
+
+    // Get previous root
+    const prevRoot = newNodes[siblingIndex - 1];
+    if (!prevRoot) return state;
+
+    // Remove from root level
+    newNodes.splice(siblingIndex, 1);
+
+    // Add as last child of previous root
+    prevRoot.children.push(nodeToMove);
+
+    // Update node levels recursively
+    const updateLevels = (node: MindmapNode, baseLevel: number) => {
+      node.level = baseLevel;
+      node.children.forEach((child) => updateLevels(child, baseLevel + 1));
+    };
+    updateLevels(nodeToMove, 1);
   } else {
     // Find parent node to get siblings
     const parentPath = path.slice(0, -1);

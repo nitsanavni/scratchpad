@@ -282,13 +282,33 @@ describe("Editor State", () => {
         expect(newState).toEqual(state); // No change
       });
 
-      it("should not move root node right", () => {
+      it("should not move first root node right", () => {
         const state = createInitialEditorState(multiRootNodes);
-        state.selectedIndex = 0; // Root 1
+        state.selectedIndex = 0; // Root 1 (first root)
 
         const newState = moveNodeRight(state);
 
-        expect(newState).toEqual(state); // No change
+        expect(newState).toEqual(state); // No change - can't move first sibling right
+      });
+
+      it("should move root node right as child of previous root", () => {
+        const state = createInitialEditorState(multiRootNodes);
+        state.selectedIndex = 3; // Root 2
+
+        const newState = moveNodeRight(state);
+
+        expect(newState.nodes).toHaveLength(2); // Root 1 and Root 3
+        expect(newState.nodes[0]!.children).toHaveLength(3); // Original 2 children + Root 2
+        expect(newState.nodes[0]!.children[2]!.text).toBe("Root 2");
+        expect(newState.nodes[0]!.children[2]!.level).toBe(1);
+        // Root 2's children should be preserved and levels updated
+        expect(newState.nodes[0]!.children[2]!.children).toHaveLength(2);
+        expect(newState.nodes[0]!.children[2]!.children[0]!.text).toBe(
+          "Child 2.1",
+        );
+        expect(newState.nodes[0]!.children[2]!.children[0]!.level).toBe(2);
+        // Selected index should follow the moved node
+        expect(newState.selectedIndex).toBe(3); // Root 2 is now at position 3 in flat navigation
       });
 
       it("should update levels when moving right", () => {
