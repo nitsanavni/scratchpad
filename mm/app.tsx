@@ -71,8 +71,8 @@ export default function App({ filepath }: AppProps) {
 
     if (mode === "navigation") {
       if (key.upArrow) {
-        if (key.ctrl) {
-          // Ctrl+Up: Move node up before previous sibling
+        if (key.shift) {
+          // Shift+Up: Move node up before previous sibling
           const newState = moveNodeUp(editorState);
           setEditorState(newState);
           autoSave(newState.nodes);
@@ -85,8 +85,8 @@ export default function App({ filepath }: AppProps) {
       }
 
       if (key.downArrow) {
-        if (key.ctrl) {
-          // Ctrl+Down: Move node down after next sibling
+        if (key.shift) {
+          // Shift+Down: Move node down after next sibling
           const newState = moveNodeDown(editorState);
           setEditorState(newState);
           autoSave(newState.nodes);

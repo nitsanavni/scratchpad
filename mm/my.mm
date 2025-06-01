@@ -1,9 +1,50 @@
-New Mindmap
+New Mindmapll
   ok
     g
     h
   hello
+    1
+    2
+    3
+      1
+      2
+      3
+  a
+    a
+      a
+        1
+        2
+        3
+        4
+        5
   k
+                                  pwd
+                                  ls
+                                  qqqqqqqqqq
+hello
+  my name is
+    Nitsan
+      Avni
+        a
+          a
+            a
+              a
+                a
+                  a
+                    a
+                      a
+                        a
+                          a
+                            a
+                              a
+                                a
+                                  a
+                                    a
+                                      a
+                                        a
+                                          -
+                                          dpoi
+                                          -
 -
 -
 -
