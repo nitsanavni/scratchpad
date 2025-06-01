@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 import { render } from "ink";
+import React from "react";
 import App from "./app.js";
 
 const filepath = process.argv[2];

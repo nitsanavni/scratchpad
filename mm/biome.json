@@ -28,6 +28,9 @@
         "noUnusedVariables": "error",
         "noUnusedImports": "error"
       },
+      "nursery": {
+        "useImportRestrictions": "off"
+      },
       "style": {
         "noNonNullAssertion": "off",
         "useConst": "error",
@@ -61,9 +64,13 @@
   },
   "overrides": [
     {
-      "include": ["*.ts", "*.tsx"],
+      "include": ["*.tsx"],
       "linter": {
-        "rules": {}
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off"
+          }
+        }
       }
     }
   ]

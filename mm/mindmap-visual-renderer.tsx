@@ -1,4 +1,5 @@
 import { Box, Text } from "ink";
+import React from "react";
 import { flattenNodesForNavigation } from "./navigation.js";
 import type { MindmapNode } from "./renderer.js";
 

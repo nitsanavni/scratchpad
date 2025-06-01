@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs";
 import { Box, Text, useApp, useInput } from "ink";
+import React from "react";
 import { useEffect, useState } from "react";
 import {
   addChildNode,

@@ -1,4 +1,5 @@
 import { Box, Text } from "ink";
+import React from "react";
 import { createHorizontalLayout } from "./horizontal-layout.js";
 import type { LayoutLine } from "./horizontal-layout.js";
 import { flattenNodesForNavigation } from "./navigation.js";

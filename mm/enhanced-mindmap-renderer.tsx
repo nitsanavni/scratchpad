@@ -1,4 +1,5 @@
 import { Box, Text } from "ink";
+import React from "react";
 import { createEnhancedLayout } from "./enhanced-layout.js";
 import type { MindmapNode } from "./renderer.js";
 
