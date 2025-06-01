@@ -47,7 +47,7 @@ function MindmapLineComponent({
   return (
     <Box>
       <Text
-        backgroundColor={isSelected ? "blue" : undefined}
+        {...(isSelected && { backgroundColor: "blue" })}
         color={isSelected ? "white" : "gray"}
         bold={isSelected}
       >

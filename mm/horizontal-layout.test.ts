@@ -1,6 +1,5 @@
 import { describe, it, expect } from "bun:test";
 import { createHorizontalLayout } from "./horizontal-layout";
-import type { LayoutLine } from "./horizontal-layout";
 import type { MindmapNode } from "./renderer";
 
 describe("Horizontal Layout", () => {

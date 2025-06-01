@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text, useApp, useInput } from "ink";
 import { readMindmapFile } from "./viewer.js";
-import { parseMindmapFile, renderMindmap } from "./renderer.js";
+import { parseMindmapFile } from "./renderer.js";
 import type { MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation } from "./navigation.js";
-import type { NavigationNode } from "./navigation.js";
 import {
   findNextSibling,
   findPrevSibling,

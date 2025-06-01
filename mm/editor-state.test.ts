@@ -9,7 +9,6 @@ import {
   moveNodeRight,
   moveNodeLeft,
 } from "./editor-state";
-import type { EditorState } from "./editor-state";
 import type { MindmapNode } from "./renderer";
 
 describe("Editor State", () => {

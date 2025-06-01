@@ -1,5 +1,4 @@
 import type { NavigationNode } from "./navigation";
-import type { MindmapNode } from "./renderer";
 
 export function findParentIndex(
   currentIndex: number,
@@ -74,23 +73,25 @@ export function findRootIndex(
   return currentIndex;
 }
 
-export function addSiblingNode(
-  currentIndex: number,
-  flatNodes: NavigationNode[],
-  nodes: MindmapNode[],
-): { newNodes: MindmapNode[]; newIndex: number } {
-  // TODO: Implement sibling addition
-  return { newNodes: nodes, newIndex: currentIndex };
-}
+// TODO: Implement addSiblingNode
+// export function addSiblingNode(
+//   currentIndex: number,
+//   flatNodes: NavigationNode[],
+//   nodes: MindmapNode[],
+// ): { newNodes: MindmapNode[]; newIndex: number } {
+//   // TODO: Implement sibling addition
+//   return { newNodes: nodes, newIndex: currentIndex };
+// }
 
-export function addChildNode(
-  currentIndex: number,
-  flatNodes: NavigationNode[],
-  nodes: MindmapNode[],
-): { newNodes: MindmapNode[]; newIndex: number } {
-  // TODO: Implement child addition
-  return { newNodes: nodes, newIndex: currentIndex };
-}
+// TODO: Implement addChildNode
+// export function addChildNode(
+//   currentIndex: number,
+//   flatNodes: NavigationNode[],
+//   nodes: MindmapNode[],
+// ): { newNodes: MindmapNode[]; newIndex: number } {
+//   // TODO: Implement child addition
+//   return { newNodes: nodes, newIndex: currentIndex };
+// }
 
 function arraysEqual(a: number[], b: number[]): boolean {
   return a.length === b.length && a.every((val, i) => val === b[i]);

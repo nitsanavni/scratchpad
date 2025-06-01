@@ -1,6 +1,5 @@
 import { describe, it, expect } from "bun:test";
 import { formatMindmapVisual } from "./mindmap-formatter";
-import type { MindmapLine } from "./mindmap-formatter";
 import type { MindmapNode } from "./renderer";
 
 describe("Mindmap Visual Formatter", () => {

@@ -56,7 +56,7 @@ function EnhancedLineComponent({
   const lineContent = Array(maxOffset + 10).fill(" "); // +10 for extra space
 
   // Place each node at its correct position
-  line.nodes.forEach((layoutNode, nodeIndex) => {
+  line.nodes.forEach((layoutNode) => {
     const isSelected = layoutNode.nodeIndex === selectedIndex;
     const isEditing = layoutNode.nodeIndex === editingIndex;
     const prefix = isSelected ? "> " : "- ";

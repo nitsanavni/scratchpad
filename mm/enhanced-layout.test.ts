@@ -1,6 +1,5 @@
 import { describe, it, expect } from "bun:test";
 import { createEnhancedLayout } from "./enhanced-layout";
-import type { EnhancedLayoutLine } from "./enhanced-layout";
 import type { MindmapNode } from "./renderer";
 
 describe("Enhanced Layout", () => {

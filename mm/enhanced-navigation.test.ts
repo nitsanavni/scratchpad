@@ -2,8 +2,6 @@ import { describe, it, expect } from "bun:test";
 import {
   findParentIndex,
   findFirstChildIndex,
-  addSiblingNode,
-  addChildNode,
   findRootIndex,
 } from "./enhanced-navigation";
 import { flattenNodesForNavigation } from "./navigation";
