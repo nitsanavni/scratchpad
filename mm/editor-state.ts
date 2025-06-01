@@ -329,3 +329,168 @@ export function moveNodeDown(state: EditorState): EditorState {
     };
   }
 }
+
+export function moveNodeRight(state: EditorState): EditorState {
+  const flatNodes = flattenNodesForNavigation(state.nodes);
+  const currentNode = flatNodes[state.selectedIndex];
+
+  if (!currentNode) return state;
+
+  // Can't move into previous sibling if we're the first child or root
+  const path = currentNode.path;
+  const siblingIndex = path[path.length - 1];
+  if (siblingIndex === undefined || siblingIndex === 0) return state;
+
+  // Deep copy the nodes structure
+  const newNodes = JSON.parse(JSON.stringify(state.nodes)) as MindmapNode[];
+
+  // Get reference to node being moved
+  let nodeToMove: MindmapNode | undefined;
+
+  if (currentNode.depth === 0) {
+    // Can't move root nodes into siblings
+    return state;
+  } else {
+    // Find parent node to get siblings
+    const parentPath = path.slice(0, -1);
+    const parentRootIndex = parentPath[0];
+    if (parentRootIndex === undefined) return state;
+    let parent = newNodes[parentRootIndex];
+    if (!parent) return state;
+
+    for (let i = 1; i < parentPath.length; i++) {
+      const parentIndex = parentPath[i];
+      if (parentIndex === undefined) return state;
+      parent = parent.children[parentIndex];
+      if (!parent) return state;
+    }
+
+    nodeToMove = parent.children[siblingIndex];
+    if (!nodeToMove) return state;
+
+    // Get previous sibling
+    const prevSibling = parent.children[siblingIndex - 1];
+    if (!prevSibling) return state;
+
+    // Remove node from current position
+    parent.children.splice(siblingIndex, 1);
+
+    // Add as last child of previous sibling
+    prevSibling.children.push(nodeToMove);
+
+    // Update node levels recursively
+    const updateLevels = (node: MindmapNode, baseLevel: number) => {
+      node.level = baseLevel;
+      node.children.forEach((child) => updateLevels(child, baseLevel + 1));
+    };
+    updateLevels(nodeToMove, prevSibling.level + 1);
+  }
+
+  // Update selected index to follow the moved node
+  const newFlatNodes = flattenNodesForNavigation(newNodes);
+  const newSelectedIndex = newFlatNodes.findIndex(
+    (flatNode) => flatNode.node === nodeToMove,
+  );
+
+  return {
+    ...state,
+    nodes: newNodes,
+    selectedIndex:
+      newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
+  };
+}
+
+export function moveNodeLeft(state: EditorState): EditorState {
+  const flatNodes = flattenNodesForNavigation(state.nodes);
+  const currentNode = flatNodes[state.selectedIndex];
+
+  if (!currentNode) return state;
+
+  // Can't move left if we're already at root level
+  if (currentNode.depth === 0) return state;
+
+  // Deep copy the nodes structure
+  const newNodes = JSON.parse(JSON.stringify(state.nodes)) as MindmapNode[];
+  const path = currentNode.path;
+
+  // Find parent and grandparent
+  const parentPath = path.slice(0, -1);
+  const siblingIndex = path[path.length - 1];
+  if (siblingIndex === undefined) return state;
+
+  // Find parent node
+  const parentRootIndex = parentPath[0];
+  if (parentRootIndex === undefined) return state;
+  let parent = newNodes[parentRootIndex];
+  if (!parent) return state;
+
+  for (let i = 1; i < parentPath.length; i++) {
+    const parentIndex = parentPath[i];
+    if (parentIndex === undefined) return state;
+    parent = parent.children[parentIndex];
+    if (!parent) return state;
+  }
+
+  const nodeToMove = parent.children[siblingIndex];
+  if (!nodeToMove) return state;
+
+  // Remove from current position
+  parent.children.splice(siblingIndex, 1);
+
+  if (parentPath.length === 1) {
+    // Parent is a root node, move to root level
+    const parentRootIdx = parentPath[0];
+    if (parentRootIdx === undefined) return state;
+
+    // Insert after parent at root level
+    newNodes.splice(parentRootIdx + 1, 0, nodeToMove);
+
+    // Update node levels recursively
+    const updateLevels = (node: MindmapNode, baseLevel: number) => {
+      node.level = baseLevel;
+      node.children.forEach((child) => updateLevels(child, baseLevel + 1));
+    };
+    updateLevels(nodeToMove, 0);
+  } else {
+    // Parent is not root, find grandparent
+    const grandparentPath = parentPath.slice(0, -1);
+    const parentIndex = parentPath[parentPath.length - 1];
+    if (parentIndex === undefined) return state;
+
+    // Find grandparent node
+    const grandparentRootIndex = grandparentPath[0];
+    if (grandparentRootIndex === undefined) return state;
+    let grandparent = newNodes[grandparentRootIndex];
+    if (!grandparent) return state;
+
+    for (let i = 1; i < grandparentPath.length; i++) {
+      const gpIndex = grandparentPath[i];
+      if (gpIndex === undefined) return state;
+      grandparent = grandparent.children[gpIndex];
+      if (!grandparent) return state;
+    }
+
+    // Insert after parent in grandparent's children
+    grandparent.children.splice(parentIndex + 1, 0, nodeToMove);
+
+    // Update node levels recursively
+    const updateLevels = (node: MindmapNode, baseLevel: number) => {
+      node.level = baseLevel;
+      node.children.forEach((child) => updateLevels(child, baseLevel + 1));
+    };
+    updateLevels(nodeToMove, grandparent.level + 1);
+  }
+
+  // Update selected index to follow the moved node
+  const newFlatNodes = flattenNodesForNavigation(newNodes);
+  const newSelectedIndex = newFlatNodes.findIndex(
+    (flatNode) => flatNode.node === nodeToMove,
+  );
+
+  return {
+    ...state,
+    nodes: newNodes,
+    selectedIndex:
+      newSelectedIndex >= 0 ? newSelectedIndex : state.selectedIndex,
+  };
+}

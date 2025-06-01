@@ -6,6 +6,8 @@ import {
   createInitialEditorState,
   moveNodeUp,
   moveNodeDown,
+  moveNodeRight,
+  moveNodeLeft,
 } from "./editor-state";
 import type { EditorState } from "./editor-state";
 import type { MindmapNode } from "./renderer";
@@ -252,6 +254,172 @@ describe("Editor State", () => {
         expect(newState.nodes[0]!.children[1]!.children[0]!.text).toBe(
           "Grandchild 1",
         );
+      });
+    });
+
+    describe("moveNodeRight", () => {
+      it("should move node as child of previous sibling", () => {
+        const state = createInitialEditorState(multiRootNodes);
+        state.selectedIndex = 2; // Child 1.2
+
+        const newState = moveNodeRight(state);
+
+        expect(newState.nodes[0]!.children[0]!.text).toBe("Child 1.1");
+        expect(newState.nodes[0]!.children[0]!.children).toHaveLength(1);
+        expect(newState.nodes[0]!.children[0]!.children[0]!.text).toBe(
+          "Child 1.2",
+        );
+        expect(newState.nodes[0]!.children).toHaveLength(1); // Child 1.2 removed from parent
+        expect(newState.selectedIndex).toBe(2); // Should follow the moved node
+      });
+
+      it("should not move first child right", () => {
+        const state = createInitialEditorState(multiRootNodes);
+        state.selectedIndex = 1; // Child 1.1 (first child)
+
+        const newState = moveNodeRight(state);
+
+        expect(newState).toEqual(state); // No change
+      });
+
+      it("should not move root node right", () => {
+        const state = createInitialEditorState(multiRootNodes);
+        state.selectedIndex = 0; // Root 1
+
+        const newState = moveNodeRight(state);
+
+        expect(newState).toEqual(state); // No change
+      });
+
+      it("should update levels when moving right", () => {
+        const deepNodes: MindmapNode[] = [
+          {
+            text: "Root",
+            level: 0,
+            children: [
+              {
+                text: "Child 1",
+                level: 1,
+                children: [],
+              },
+              {
+                text: "Child 2",
+                level: 1,
+                children: [{ text: "Grandchild", level: 2, children: [] }],
+              },
+            ],
+          },
+        ];
+
+        const state = createInitialEditorState(deepNodes);
+        state.selectedIndex = 2; // Child 2
+
+        const newState = moveNodeRight(state);
+
+        // Child 2 should now be child of Child 1
+        expect(newState.nodes[0]!.children[0]!.children[0]!.text).toBe(
+          "Child 2",
+        );
+        expect(newState.nodes[0]!.children[0]!.children[0]!.level).toBe(2);
+        // Grandchild should now be at level 3
+        expect(
+          newState.nodes[0]!.children[0]!.children[0]!.children[0]!.text,
+        ).toBe("Grandchild");
+        expect(
+          newState.nodes[0]!.children[0]!.children[0]!.children[0]!.level,
+        ).toBe(3);
+      });
+    });
+
+    describe("moveNodeLeft", () => {
+      it("should move node as next sibling of parent", () => {
+        const deepNodes: MindmapNode[] = [
+          {
+            text: "Root",
+            level: 0,
+            children: [
+              {
+                text: "Parent",
+                level: 1,
+                children: [
+                  { text: "Child 1", level: 2, children: [] },
+                  { text: "Child 2", level: 2, children: [] },
+                ],
+              },
+              {
+                text: "Uncle",
+                level: 1,
+                children: [],
+              },
+            ],
+          },
+        ];
+
+        const state = createInitialEditorState(deepNodes);
+        state.selectedIndex = 2; // Child 1
+
+        const newState = moveNodeLeft(state);
+
+        expect(newState.nodes[0]!.children).toHaveLength(3); // Parent, Child 1, Uncle
+        expect(newState.nodes[0]!.children[1]!.text).toBe("Child 1");
+        expect(newState.nodes[0]!.children[1]!.level).toBe(1);
+        expect(newState.selectedIndex).toBe(3); // Should follow the moved node
+      });
+
+      it("should move to root level when parent is root", () => {
+        const state = createInitialEditorState(multiRootNodes);
+        state.selectedIndex = 1; // Child 1.1
+
+        const newState = moveNodeLeft(state);
+
+        expect(newState.nodes).toHaveLength(4); // 3 original roots + moved node
+        expect(newState.nodes[1]!.text).toBe("Child 1.1");
+        expect(newState.nodes[1]!.level).toBe(0);
+      });
+
+      it("should not move root node left", () => {
+        const state = createInitialEditorState(multiRootNodes);
+        state.selectedIndex = 0; // Root 1
+
+        const newState = moveNodeLeft(state);
+
+        expect(newState).toEqual(state); // No change
+      });
+
+      it("should update levels when moving left", () => {
+        const deepNodes: MindmapNode[] = [
+          {
+            text: "Root",
+            level: 0,
+            children: [
+              {
+                text: "Parent",
+                level: 1,
+                children: [
+                  {
+                    text: "Child",
+                    level: 2,
+                    children: [{ text: "Grandchild", level: 3, children: [] }],
+                  },
+                ],
+              },
+            ],
+          },
+        ];
+
+        const state = createInitialEditorState(deepNodes);
+        state.selectedIndex = 2; // Child
+
+        const newState = moveNodeLeft(state);
+
+        // Child should now be sibling of Parent
+        expect(newState.nodes[0]!.children[1]!.text).toBe("Child");
+        expect(newState.nodes[0]!.children[1]!.level).toBe(1);
+        // Grandchild should now be at level 2
+        expect(newState.nodes[0]!.children[1]!.children[0]!.text).toBe(
+          "Grandchild",
+        );
+        expect(newState.nodes[0]!.children[1]!.children[0]!.level).toBe(2);
       });
     });
   });
