@@ -1,5 +1,5 @@
-import { describe, it, expect } from "bun:test";
-import { renderMindmap, parseMindmapFile } from "./renderer";
+import { describe, expect, it } from "bun:test";
+import { parseMindmapFile, renderMindmap } from "./renderer";
 
 describe("Mindmap Parser", () => {
   it("should parse simple flat list", () => {

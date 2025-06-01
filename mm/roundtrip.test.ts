@@ -1,6 +1,6 @@
-import { describe, it, expect } from "bun:test";
-import { parseMindmapFile } from "./renderer";
+import { describe, expect, it } from "bun:test";
 import { formatToMindmap } from "./formatter";
+import { parseMindmapFile } from "./renderer";
 
 describe("Roundtrip Tests", () => {
   it("should preserve simple flat structure", () => {

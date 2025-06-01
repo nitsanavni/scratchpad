@@ -1,5 +1,5 @@
-import type { MindmapNode } from "./renderer";
 import { flattenNodesForNavigation } from "./navigation";
+import type { MindmapNode } from "./renderer";
 
 export interface EditorState {
   nodes: MindmapNode[];

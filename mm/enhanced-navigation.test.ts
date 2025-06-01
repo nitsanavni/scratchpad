@@ -1,7 +1,7 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import {
-  findParentIndex,
   findFirstChildIndex,
+  findParentIndex,
   findRootIndex,
 } from "./enhanced-navigation";
 import { flattenNodesForNavigation } from "./navigation";

@@ -1,13 +1,13 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import {
-  addSiblingNode,
   addChildNode,
-  updateNodeText,
+  addSiblingNode,
   createInitialEditorState,
-  moveNodeUp,
   moveNodeDown,
-  moveNodeRight,
   moveNodeLeft,
+  moveNodeRight,
+  moveNodeUp,
+  updateNodeText,
 } from "./editor-state";
 import type { MindmapNode } from "./renderer";
 

@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
+import { promises as fs } from "node:fs";
 import { Box, Text, useApp, useInput } from "ink";
-import { readMindmapFile } from "./viewer.js";
-import { parseMindmapFile } from "./renderer.js";
-import type { MindmapNode } from "./renderer.js";
-import { flattenNodesForNavigation } from "./navigation.js";
+import { useEffect, useState } from "react";
 import {
-  findNextSibling,
-  findPrevSibling,
-  findParent,
-  findFirstChild,
-} from "./tree-navigation.js";
-import { EnhancedMindmapRenderer } from "./enhanced-mindmap-renderer.js";
-import {
-  createInitialEditorState,
-  addSiblingNode,
   addChildNode,
-  updateNodeText,
-  moveNodeUp,
+  addSiblingNode,
+  createInitialEditorState,
   moveNodeDown,
-  moveNodeRight,
   moveNodeLeft,
+  moveNodeRight,
+  moveNodeUp,
+  updateNodeText,
 } from "./editor-state.js";
 import type { EditorState } from "./editor-state.js";
+import { EnhancedMindmapRenderer } from "./enhanced-mindmap-renderer.js";
 import { formatToMindmap } from "./formatter.js";
-import { promises as fs } from "fs";
+import { flattenNodesForNavigation } from "./navigation.js";
+import { parseMindmapFile } from "./renderer.js";
+import type { MindmapNode } from "./renderer.js";
+import {
+  findFirstChild,
+  findNextSibling,
+  findParent,
+  findPrevSibling,
+} from "./tree-navigation.js";
+import { readMindmapFile } from "./viewer.js";
 
 interface AppProps {
   filepath: string;

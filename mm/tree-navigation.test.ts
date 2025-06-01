@@ -1,12 +1,12 @@
-import { describe, it, expect } from "bun:test";
-import {
-  findNextSibling,
-  findPrevSibling,
-  findParent,
-  findFirstChild,
-} from "./tree-navigation";
+import { describe, expect, it } from "bun:test";
 import { flattenNodesForNavigation } from "./navigation";
 import type { MindmapNode } from "./renderer";
+import {
+  findFirstChild,
+  findNextSibling,
+  findParent,
+  findPrevSibling,
+} from "./tree-navigation";
 
 describe("Tree Navigation", () => {
   const sampleNodes: MindmapNode[] = [

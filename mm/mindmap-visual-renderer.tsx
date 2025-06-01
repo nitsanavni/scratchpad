@@ -1,7 +1,6 @@
-import React from "react";
 import { Box, Text } from "ink";
-import type { MindmapNode } from "./renderer.js";
 import { flattenNodesForNavigation } from "./navigation.js";
+import type { MindmapNode } from "./renderer.js";
 
 interface MindmapVisualRendererProps {
   nodes: MindmapNode[];

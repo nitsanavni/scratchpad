@@ -4,9 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "bunx tsc --noEmit && bunx prettier --write ."
+    "lint": "bunx tsc --noEmit && bunx @biomejs/biome check --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest"
   },
   "peerDependencies": {

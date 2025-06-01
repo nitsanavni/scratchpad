@@ -1,6 +1,6 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
+import { promises as fs } from "node:fs";
 import { readMindmapFile } from "./viewer";
-import { promises as fs } from "fs";
 
 describe("Mindmap File Reader", () => {
   it("should read existing .mm file", async () => {

@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
+import { Box, Text, render } from "ink";
 import React from "react";
-import { render, Box, Text } from "ink";
-import { readMindmapFile } from "./viewer.js";
 import { parseMindmapFile } from "./renderer.js";
 import type { MindmapNode } from "./renderer.js";
+import { readMindmapFile } from "./viewer.js";
 
 interface ViewerProps {
   filepath: string;

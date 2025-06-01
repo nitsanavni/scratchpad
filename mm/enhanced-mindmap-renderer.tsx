@@ -1,7 +1,6 @@
-import React from "react";
 import { Box, Text } from "ink";
-import type { MindmapNode } from "./renderer.js";
 import { createEnhancedLayout } from "./enhanced-layout.js";
+import type { MindmapNode } from "./renderer.js";
 
 interface EnhancedMindmapRendererProps {
   nodes: MindmapNode[];

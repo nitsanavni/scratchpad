@@ -1,9 +1,8 @@
-import React from "react";
 import { Box, Text } from "ink";
-import type { MindmapNode } from "./renderer.js";
 import { createHorizontalLayout } from "./horizontal-layout.js";
 import type { LayoutLine } from "./horizontal-layout.js";
 import { flattenNodesForNavigation } from "./navigation.js";
+import type { MindmapNode } from "./renderer.js";
 
 interface HorizontalMindmapRendererProps {
   nodes: MindmapNode[];
