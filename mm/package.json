@@ -4,11 +4,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint": "bunx tsc --noEmit && bunx @biomejs/biome check --write ."
+    "lint": "bunx tsgo --noEmit && bunx @biomejs/biome check --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@typescript/native-preview": "^7.0.0-dev.20250601.1"
   },
   "peerDependencies": {
     "typescript": "^5"
