@@ -48,7 +48,7 @@
 - **Chosen**: Bun for TypeScript execution and package management
 - **Benefits**: Fast startup, native TypeScript support, npm-compatible
 - **Usage**: `bun test`, `bun add`, `bun run script.tsx`
-- **TypeScript checking**: `bunx tsc --noEmit` (check for type errors without emitting files)
+- **TypeScript checking**: `bunx tsgo --noEmit` (using Go-based TypeScript compiler for 6x faster type checking)
 - **Search**: Use `rg` (ripgrep) instead of `grep` for faster searches
 - **Running the app**: `bun cli.tsx examples/simple.mm` (or any other .mm file)
 
