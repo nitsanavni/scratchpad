@@ -17,5 +17,5 @@
     //     "moby": false
     //   }
     // }
-	"postCreateCommand": "echo 'alias c=\"/home/vscode/.bun/bin/bun /home/vscode/.bun/bin/claude --dangerously-skip-permissions\"' >> ~/.bashrc"
+	"postCreateCommand": "echo 'alias c=\"/home/vscode/.bun/bin/bun /home/vscode/.bun/bin/claude --dangerously-skip-permissions --mcp-config /workspaces/scratchpad/.mcp.json\"' >> ~/.bashrc"
 }
