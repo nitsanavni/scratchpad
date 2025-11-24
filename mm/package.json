@@ -3,6 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "bin": {
+    "mm": "./cli.tsx"
+  },
   "scripts": {
     "lint": "bunx tsgo --noEmit && bunx @biomejs/biome check --write ."
   },
