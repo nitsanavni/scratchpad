@@ -7,7 +7,7 @@
     "mm": "./cli.tsx"
   },
   "scripts": {
-    "lint": "bunx tsgo --noEmit && bunx @biomejs/biome check --write ."
+    "lint": "bunx --bun tsc --noEmit && bunx @biomejs/biome check --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

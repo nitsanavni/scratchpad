@@ -2,6 +2,7 @@
   "compilerOptions": {
     // Environment setup & latest features
     "lib": ["ESNext"],
+    "types": ["bun"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
@@ -32,7 +33,6 @@
     "forceConsistentCasingInFileNames": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "noImplicitUseStrict": false,
     "alwaysStrict": true
   }
 }
