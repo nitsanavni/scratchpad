@@ -193,7 +193,12 @@ tmux send-keys -t mm-test q
 - ✅ Quit (q)
 
 ### Known Bugs
-- ❌ Backspace/Delete not working in edit mode
 - ❌ No way to edit existing nodes (need 'e' or 'i' key)
 - ⚠️ Text truncated in display during editing (saves correctly)
 - ⚠️ React duplicate key warning in console
+
+### Fixed Bugs (2025-11-26)
+- ✅ Backspace/Delete now working in edit mode
+  - **Root Cause**: Event handler order issue - text input handler was executing before backspace handler
+  - **Fix**: Moved backspace/delete handler before text input handler with early return
+  - **Location**: app.tsx lines 198-213

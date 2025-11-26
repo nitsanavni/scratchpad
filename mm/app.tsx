@@ -195,18 +195,20 @@ export default function App({ filepath }: AppProps) {
         autoSave(newState.nodes);
       }
 
+      // Handle backspace/delete first to avoid text input interference
+      if (key.backspace || key.delete) {
+        setEditorState({
+          ...editorState,
+          editingText: editorState.editingText.slice(0, -1),
+        });
+        return; // Early return to prevent further processing
+      }
+
       // Handle text input
       if (input && !key.return && !key.escape && !key.tab) {
         setEditorState({
           ...editorState,
           editingText: editorState.editingText + input,
-        });
-      }
-
-      if (key.backspace || key.delete) {
-        setEditorState({
-          ...editorState,
-          editingText: editorState.editingText.slice(0, -1),
         });
       }
     }

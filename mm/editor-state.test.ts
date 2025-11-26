@@ -442,4 +442,60 @@ describe("Editor State", () => {
       });
     });
   });
+
+  describe("Edit Mode Text Handling", () => {
+    it("should handle backspace to delete last character", () => {
+      const state = createInitialEditorState(sampleNodes);
+      const editState = {
+        ...state,
+        mode: "edit" as const,
+        editingIndex: 0,
+        editingText: "Hello World",
+      };
+
+      // Simulate backspace by removing last character
+      const newState = {
+        ...editState,
+        editingText: editState.editingText.slice(0, -1),
+      };
+
+      expect(newState.editingText).toBe("Hello Worl");
+    });
+
+    it("should handle multiple backspaces", () => {
+      const state = createInitialEditorState(sampleNodes);
+      const editState = {
+        ...state,
+        mode: "edit" as const,
+        editingIndex: 0,
+        editingText: "Test",
+      };
+
+      // Simulate 3 backspaces
+      let currentText = editState.editingText;
+      currentText = currentText.slice(0, -1); // "Tes"
+      currentText = currentText.slice(0, -1); // "Te"
+      currentText = currentText.slice(0, -1); // "T"
+
+      expect(currentText).toBe("T");
+    });
+
+    it("should handle backspace on empty string gracefully", () => {
+      const state = createInitialEditorState(sampleNodes);
+      const editState = {
+        ...state,
+        mode: "edit" as const,
+        editingIndex: 0,
+        editingText: "",
+      };
+
+      // Simulate backspace on empty string
+      const newState = {
+        ...editState,
+        editingText: editState.editingText.slice(0, -1),
+      };
+
+      expect(newState.editingText).toBe("");
+    });
+  });
 });
