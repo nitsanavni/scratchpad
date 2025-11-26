@@ -8,6 +8,14 @@
         "@upstash/context7-mcp"
       ],
       "env": {}
+    },
+    "beads": {
+      "type": "stdio",
+      "command": "beads-mcp",
+      "args": [],
+      "env": {
+        "BEADS_USE_DAEMON": "1"
+      }
     }
   }
 }
