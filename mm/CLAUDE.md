@@ -48,7 +48,7 @@
 - **Chosen**: Bun for TypeScript execution and package management
 - **Benefits**: Fast startup, native TypeScript support, npm-compatible
 - **Usage**: `bun test`, `bun add`, `bun run script.tsx`
-- **TypeScript checking**: `bunx tsgo --noEmit` (using Go-based TypeScript compiler for 6x faster type checking)
+- **TypeScript checking**: `bunx --bun tsc --noEmit` (uses local tsc with bun's module resolution)
 - **Search**: Use `rg` (ripgrep) instead of `grep` for faster searches
 - **Running the app**: `bun cli.tsx examples/simple.mm` (or any other .mm file)
 
@@ -149,3 +149,51 @@
 
 - Save happens continuously/automatically
 - No manual save required
+
+# Exploratory Testing with tmux
+
+## How to Test
+
+Use tmux to test the interactive CLI since it requires a real terminal:
+
+```bash
+# Create/attach to test session
+tmux new-session -d -s mm-test
+tmux send-keys -t mm-test "cd /workspaces/scratchpad/mm && bun cli.tsx examples/simple.mm" Enter
+
+# Capture output
+tmux capture-pane -t mm-test -p
+
+# Send keys (navigation)
+tmux send-keys -t mm-test Up
+tmux send-keys -t mm-test Down
+tmux send-keys -t mm-test Left
+tmux send-keys -t mm-test Right
+
+# Send keys (editing)
+tmux send-keys -t mm-test Enter          # Add sibling
+tmux send-keys -t mm-test "some text"    # Type text
+tmux send-keys -t mm-test Tab            # Add child (in edit mode)
+tmux send-keys -t mm-test Escape         # Cancel/exit edit mode
+
+# Quit
+tmux send-keys -t mm-test q
+```
+
+## Test Results (2025-11-26)
+
+### Working Features
+- ✅ Navigation (↑↓←→) - moves between nodes correctly
+- ✅ Add sibling (Enter) - creates node and enters edit mode
+- ✅ Add child (Tab) - creates child node
+- ✅ Text input in edit mode
+- ✅ Save edit (Enter)
+- ✅ Cancel edit (Esc)
+- ✅ Auto-save to file
+- ✅ Quit (q)
+
+### Known Bugs
+- ❌ Backspace/Delete not working in edit mode
+- ❌ No way to edit existing nodes (need 'e' or 'i' key)
+- ⚠️ Text truncated in display during editing (saves correctly)
+- ⚠️ React duplicate key warning in console
